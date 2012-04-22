@@ -171,15 +171,7 @@ Game.prototype.loadAssets = function() {
   document.getElementById("controls").appendChild(this.scale_input);
 }
 
-Game.prototype.init = function(){
-  //IMAGE SIZE
-  if(window.innerHeight > 600){
-    this.img.src = "img/rainbow500x400.png";
-  }
-  else{
-    this.img.src = "img/rainbow125x100.png";
-  }
-  
+Game.prototype.init = function(){  
   this.loaded = true;
   this.pieces = new Array();
   this.holders = new Array();

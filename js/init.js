@@ -110,7 +110,15 @@ function resizeGame() {
     document.getElementById('canvas').width = window.innerWidth;
     document.getElementById('canvas').height = window.innerHeight;
     console.log("canvas: "+window.innerWidth+", "+window.innerHeight)
-    game.init();
+    
+    //IMAGE SIZE
+    if(window.innerHeight > 600){
+      game.img.src = "img/rainbow500x400.png";
+    }
+    else{
+      game.img.src = "img/rainbow125x100.png";
+    }
+    game.img.onload = game.init();
 }
 
 window.addEventListener('resize', resizeGame, false);
