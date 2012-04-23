@@ -79,6 +79,7 @@ function loop(){
   if(elapsed > game.maxElapsedTime)
     game.maxElapsedTime = elapsed;
     
+  game.context.fillText("scale: "+game.scale, 50, 20);
   game.context.fillText("loaded items: "+game.loaded_items, 50, 30);
   game.context.fillText(">>> "+elapsed, 50, 50);
   game.context.fillText("maxElapsedTime>>> "+game.maxElapsedTime, 50, 60);
@@ -110,15 +111,7 @@ function resizeGame() {
     document.getElementById('canvas').width = window.innerWidth;
     document.getElementById('canvas').height = window.innerHeight;
     console.log("canvas: "+window.innerWidth+", "+window.innerHeight)
-    
-    //IMAGE SIZE
-    if(window.innerHeight > 600){
-      game.img.src = "img/rainbow500x400.png";
-    }
-    else{
-      game.img.src = "img/rainbow125x100.png";
-    }
-    game.img.onload = game.init();
+    game.init();
 }
 
 window.addEventListener('resize', resizeGame, false);
