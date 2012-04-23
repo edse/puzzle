@@ -54,10 +54,16 @@ Piece.prototype.draw = function() {
     this.p = this.p*1.1;
     this.startPoint.x = this.startPoint.x + this.p;
     this.startPoint.y = this.m * this.startPoint.x + this.b;
-    if((this.startPoint.x > this.game.canvas.width-this.game.img.width/this.game.num_lines) || 
-      (this.startPoint.y > this.game.canvas.height-this.game.img.height/this.game.num_lines) || 
+    /*
+    if((this.startPoint.x > (this.game.canvas.width/this.scale)-this.game.img.width/this.game.num_lines) || 
+      (this.startPoint.y > (this.game.canvas.height/this.scale)-this.game.img.height/this.game.num_lines) || 
       (this.startPoint.x < this.game.img.width/this.game.num_lines) || 
       (this.startPoint.y < this.game.img.height/this.game.num_lines)){
+    */
+    if((this.startPoint.x+this.width/2 >= (this.game.canvas.width/this.game.scale)) || 
+      (this.startPoint.y+this.height/2 >= (this.game.canvas.height/this.game.scale)) || 
+      (this.startPoint.x-this.width/2 <= 0) || 
+      (this.startPoint.y-this.height/2 <= 0)){
       this.moveble = true;
       this.x = this.startPoint.x;
       this.y = this.startPoint.y;
@@ -102,9 +108,9 @@ Piece.prototype.draw = function() {
       this.game.context.fillStyle = "rgba(255, 0, 0, 0.1)";
   
     //target distance
-    if(this.near()){
+    if((this.game.selected == this)&&(this.near())){
       this.game.context.fillStyle = "rgba(0, 255, 0, 0.1)";
-      if((this.game.auto_snap == true)&&(!this.placed)&&(this.game.selected != null)){
+      if((this.game.auto_snap == true)&&(!this.placed)){
         //place
         this.game.selected.x = this.game.selected.target.x;
         this.game.selected.y = this.game.selected.target.y;
