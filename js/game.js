@@ -7,12 +7,13 @@ Game.prototype.loadAssets = function() {
   this.canvas = document.getElementById('canvas');
   this.context = this.canvas.getContext('2d');
   
-//
-    document.getElementById('canvas').width = window.innerWidth;
-    document.getElementById('canvas').height = window.innerHeight;
-    console.log("canvas: "+window.innerWidth+", "+window.innerHeight)
-//
-  this.items_to_load = 4;
+  //Canvas size
+  document.getElementById('canvas').width = window.innerWidth;
+  document.getElementById('canvas').height = window.innerHeight;
+  console.log("canvas: "+window.innerWidth+", "+window.innerHeight)
+  //
+
+  this.items_to_load = 5;
   this.loaded_items = 0;
   this.loaded = false;
   this.interval = null;
@@ -58,7 +59,6 @@ Game.prototype.loadAssets = function() {
   this.twang.addEventListener('canplaythrough', asdf(this), false);
 
   //AUDIO
-  /*
   this.bgm = document.createElement('audio');
   var source= document.createElement('source');
   if(this.bgm.canPlayType('audio/mpeg;')) {
@@ -71,7 +71,6 @@ Game.prototype.loadAssets = function() {
   this.bgm.appendChild(source);
   this.bgm.addEventListener('canplaythrough', asdf(this), false);
   this.bgm.play();
-  */
   
   //AUDIO
   this.chimes = document.createElement('audio');
@@ -341,10 +340,9 @@ Game.prototype.render = function() {
       }
     }
   }
-  
 
-
-  //DEBUG  
+  //DEBUG
+  /*
   if(this.debug){
     document.getElementById('mx').value = this.mouse.x;
     document.getElementById('my').value = this.mouse.y;
@@ -371,11 +369,13 @@ Game.prototype.render = function() {
   
     document.getElementById('pp').value = this.placed_pieces.length;
   }
+  */
 
 }
 
 Game.prototype.draw_bg = function() {
   this.context.save();
+
   //bg
   this.context.fillStyle = '#FEFEFE';
   this.context.fillRect(0,0,this.canvas.width/this.scale,this.canvas.height/this.scale);
@@ -385,14 +385,6 @@ Game.prototype.draw_bg = function() {
   this.context.lineWidth = 1;
   this.context.strokeRect(1,1,this.canvas.width/this.scale-2,this.canvas.height/this.scale-2);
 
-  //bg image
-  /*
-  var offsetx = this.canvas.width/2-this.img_bg.width/2;
-  var offsety = this.canvas.height/2-this.img_bg.height/2;
-  this.context.globalAlpha = 1
-  this.context.drawImage(this.img_bg, offsetx, offsety);
-  */
-  
   //puzzle image
   var offsetx = (this.canvas.width/this.scale)/2-(this.img_width)/2;
   var offsety = (this.canvas.height/this.scale)/2-(this.img_height)/2;
@@ -412,7 +404,9 @@ Game.prototype.getTimer = function() {
   return (new Date().getTime() - this.start_time); //milliseconds
 }
 
+/*
 Game.prototype.loop = function(){
   var instance = this;
-  instance.interval = requestAnimationFrame(instance.drawFrame2(instance), instance.canvas);
+  instance.interval = requestAnimationFrame(instance.draw(), instance.canvas);
 }
+*/

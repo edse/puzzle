@@ -123,6 +123,9 @@ Mouse.prototype.mousemove = function(e) {
   //xx += document.getElementById("game").style.marginLeft*2;
   //yy += document.getElementById("game").style.marginTop*2;
   
+  xx = xx/this.game.scale;
+  yy = yy/this.game.scale;
+  
   this.moving = true;
   window.m.interv();
   this.x = xx;
@@ -294,7 +297,10 @@ Mouse.prototype.touchmove = function(e) {
   }  
   //xx -= offsetLeft;
   //yy -= offsetTop;
-  
+
+  xx = xx/this.game.scale;
+  yy = yy/this.game.scale;
+
   this.moving = true;
   this.x = xx;
   this.y = yy;

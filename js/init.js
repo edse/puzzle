@@ -64,12 +64,14 @@ window.m.startBGM = function () {
 }
 
 function start(){
-  window.requestAnimationFrame(loop, game.canvas);
+  loop();
 }
 start();
 
 function loop(){
   game.interval = window.requestAnimationFrame(loop, game.canvas);
+  game.canvas.width = game.canvas.width;
+  game.context.scale(game.scale,game.scale);
   game.render();
 
   var elapsed = game.getTimer() - game.time;
@@ -78,13 +80,14 @@ function loop(){
   //elapsed = Math.min(20, Math.max(-20, elapsed));
   if(elapsed > game.maxElapsedTime)
     game.maxElapsedTime = elapsed;
-    
-  game.context.fillText("scale: "+game.scale, 50, 20);
-  game.context.fillText("loaded items: "+game.loaded_items, 50, 30);
+
+  game.context.fillText("scale: "+game.scale, 50, 30);
+  game.context.fillText("loaded items: "+game.loaded_items, 50, 40);
   game.context.fillText(">>> "+elapsed, 50, 50);
   game.context.fillText("maxElapsedTime>>> "+game.maxElapsedTime, 50, 60);
   game.context.fillText(game.remaining_time, 50, 80);
   game.context.fillText(game.auto_snap, 50, 100);
+
 }
 
 function asdf(g){
