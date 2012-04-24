@@ -92,11 +92,15 @@ Game.prototype.loadAssets = function() {
   this.full_btn.setAttribute("id", "full_btn");
   this.full_btn.onclick = function() {
     if(this.value == "FULLSCREEN off"){
-      toggleFullScreen();
-      this.value = "FULLSCREEN on";
+      if(screenfull){
+        screenfull.toggle();
+        this.value = "FULLSCREEN on";
+      }
     }else if(this.value == "FULLSCREEN on"){
-      toggleFullScreen();
-      this.value = "FULLSCREEN off";
+      if(screenfull){
+        screenfull.toggle();
+        this.value = "FULLSCREEN off";
+      }
     }
   };
   document.getElementById("controls").appendChild(this.full_btn);
