@@ -9,6 +9,9 @@ Technologies:
 - Offline browsing support (App cache)
 - Fullscreen support (Fullscreen API)
 
+http://puzzle.possum-cms.com
+http://html5puzzle.appspot.com
+
 Next steps:
 - Add credits (music, sounds fxs, images, and code)
 - Add splash screen
