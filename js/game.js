@@ -92,12 +92,10 @@ Game.prototype.loadAssets = function() {
   this.full_btn.setAttribute("id", "full_btn");
   this.full_btn.onclick = function() {
     if(this.value == "FULLSCREEN off"){
-      document.webkitCancelFullScreen();
-      document.mozCancelFullScreen();
+      toggleFullScreen();
       this.value = "FULLSCREEN on";
     }else if(this.value == "FULLSCREEN on"){
-      document.getElementById("canvas").webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-      document.getElementById("canvas").mozRequestFullScreen();
+      toggleFullScreen();
       this.value = "FULLSCREEN off";
     }
   };
