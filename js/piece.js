@@ -130,11 +130,11 @@ Piece.prototype.draw = function() {
       this.x-this.game.piece_width/2, this.y-this.game.piece_height/2, this.game.piece_width, this.game.piece_height);
   
     if(!this.game.is_over){
-      this.game.context.strokeRect(this.x-this.width/2,this.y-this.height/2,this.width,this.height);
+      //this.game.context.strokeRect(this.x-this.width/2,this.y-this.height/2,this.width,this.height);
       this.game.context.fillRect(this.x-this.width/2,this.y-this.height/2,this.width,this.height);
       this.game.context.globalAlpha = 1
-      this.game.context.fillStyle = "rgba(0, 0, 0, 1)";
-      this.game.context.fillText(this.id, this.x-3, this.y+3);
+      //this.game.context.fillStyle = "rgba(0, 0, 0, 1)";
+      //this.game.context.fillText(this.id, this.x-3, this.y+3);
     }
     
     this.game.context.closePath();

@@ -39,8 +39,8 @@ Holder.prototype.draw = function() {
   this.game.context.beginPath();
   this.game.context.strokeRect(this.x-this.game.piece_width/2,this.y-this.game.piece_height/2,this.game.piece_width,this.game.piece_height);
   this.game.context.fillRect(holder.x-this.piece_width/2,holder.y-this.piece_height/2,this.piece_width,this.piece_height);
-  this.game.context.fillStyle = "rgba(0, 0, 0, 0.5)";
-  this.game.context.fillText(this.id, this.x-3, this.y+3);
+  //this.game.context.fillStyle = "rgba(0, 0, 0, 0.5)";
+  //this.game.context.fillText(this.id, this.x-3, this.y+3);
   this.game.context.closePath();
   this.game.context.restore();
 }

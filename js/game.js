@@ -1,4 +1,5 @@
 function Game(canvas) {
+  this.started = false;
   console.log('start loading...')
   this.loadAssets();
 }
@@ -43,7 +44,7 @@ Game.prototype.loadAssets = function() {
     source.src= 'audio/final/drip.ogg';
   }
   this.drip.appendChild(source);
-  this.drip.addEventListener('canplaythrough', asdf(this), false);
+  this.drip.addEventListener('canplaythrough', itemLoaded(this), false);
   
   //AUDIO
   this.twang = document.createElement('audio');
@@ -56,7 +57,7 @@ Game.prototype.loadAssets = function() {
     source.src= 'audio/final/twang2.ogg';
   }
   this.twang.appendChild(source);
-  this.twang.addEventListener('canplaythrough', asdf(this), false);
+  this.twang.addEventListener('canplaythrough', itemLoaded(this), false);
 
   //AUDIO
   this.bgm = document.createElement('audio');
@@ -69,8 +70,11 @@ Game.prototype.loadAssets = function() {
     source.src= 'audio/final/Pictures-Sleep_on_soft_sheets.ogg';
   }
   this.bgm.appendChild(source);
-  this.bgm.addEventListener('canplaythrough', asdf(this), false);
-  this.bgm.play();
+  this.bgm.addEventListener('canplaythrough',  itemLoaded(this), false);
+  this.bgm.addEventListener('ended', function() {
+    this.currentTime = 0;
+    this.play();
+  }, false);
   
   //AUDIO
   this.chimes = document.createElement('audio');
@@ -83,7 +87,7 @@ Game.prototype.loadAssets = function() {
     source.src= 'audio/final/chimes.ogg';
   }
   this.chimes.appendChild(source);
-  this.chimes.addEventListener('canplaythrough', asdf(this), false);
+  this.chimes.addEventListener('canplaythrough', itemLoaded(this), false);
       
   //BUTTON
   this.full_btn = document.createElement("input");
@@ -170,12 +174,24 @@ Game.prototype.loadAssets = function() {
 
 Game.prototype.init = function(){
   //IMAGE SIZE
-  if(window.innerHeight <= 300){
-    this.context.scale(0.3,0.3);
-    this.scale = 0.3;
-  }else if(window.innerHeight <= 600){
+  if((window.innerHeight <= 80)||(window.innerWidth <= 230)){
+    this.context.scale(0.05,0.05);
+    this.scale = 0.05;
+  }else if((window.innerHeight <= 95)||(window.innerWidth <= 230)){
+    this.context.scale(0.1,0.1);
+    this.scale = 0.2;
+  }else if((window.innerHeight <= 150)||(window.innerWidth <= 330)){
+    this.context.scale(0.2,0.2);
+    this.scale = 0.2;
+  }else if((window.innerHeight <= 300)||(window.innerWidth <= 430)){
     this.context.scale(0.5,0.5);
     this.scale = 0.5;
+  }else if((window.innerHeight <= 400)||(window.innerWidth <= 530)){
+    this.context.scale(0.6,0.6);
+    this.scale = 0.6;
+  }else if((window.innerHeight <= 500)||(window.innerWidth <= 630)){
+    this.context.scale(0.8,0.8);
+    this.scale = 0.8;
   }else{
     this.context.scale(1,1);
     this.scale = 1;
@@ -232,13 +248,12 @@ Game.prototype.placePieces = function(){
     this.pieces.push(temp);
     console.log('pieces array length>>'+this.pieces.length);
   }
-}
-
-Game.prototype.placeHolders = function(){
   if(this.chimes.currentTime != 0)
     this.chimes.currentTime = 0;
   this.chimes.play();
+}
 
+Game.prototype.placeHolders = function(){
   var pieces = 1;
   var offsetx = (this.canvas.width/this.scale)/2-(this.img_width)/2;
   var offsety = (this.canvas.height/this.scale)/2-(this.img_height)/2;
@@ -379,8 +394,8 @@ Game.prototype.draw_bg = function() {
   this.context.save();
 
   //bg
-  this.context.fillStyle = '#FEFEFE';
-  this.context.fillRect(0,0,this.canvas.width/this.scale,this.canvas.height/this.scale);
+  //this.context.fillStyle = '#FEFEFE';
+  //this.context.fillRect(0,0,this.canvas.width/this.scale,this.canvas.height/this.scale);
   
   //box
   this.context.strokeStyle = '#000000';

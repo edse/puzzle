@@ -99,14 +99,30 @@ window.m.intervClear = function() {
   clearInterval(interval)
 }
 window.m.stopGame = function() {
-  window.cancelAnimationFrame(window.m.game.interval);
+  document.getElementById('canvas').style.zIndex = 14;
+  document.getElementById('splash').style.zIndex = 15;
+  document.getElementById('title').style.fontSize = "9em";
+  document.getElementById('title').style.opacity = 1;
+  window.m.stopSFX();
+  window.m.stopBGM();
+  game.started = false;
+  window.cancelAnimationFrame(game.interval);
 }
 window.m.startGame = function() {
-  start();
+  document.getElementById('canvas').style.zIndex = 15;
+  document.getElementById('splash').style.zIndex = 14;
+  document.getElementById('title').style.fontSize = "3em";
+  document.getElementById('title').style.opacity = 0.3;
+  window.m.startSFX();
+  window.m.startBGM();
+  game.started = true;
+  loop();
 }
 window.m.stopSFX = function() {
   window.m.game.drip.volume = 0.0;
   window.m.game.twang.volume = 0.0;
+  window.m.game.drip.pause();
+  window.m.game.twang.pause();
 }
 window.m.startSFX = function() {
   window.m.game.drip.volume = 1.0;
@@ -114,14 +130,37 @@ window.m.startSFX = function() {
 }
 window.m.stopBGM = function() {
   window.m.game.bgm.volume = 0.0;
+  window.m.game.bgm.pause();
 }
 window.m.startBGM = function() {
   window.m.game.bgm.volume = 1.0;
+  window.m.game.bgm.play();
 }
+
+document.getElementById('play').onclick = function() {
+  if(this.value == "PLAY"){
+    window.m.startGame();
+    this.value = "PAUSE";
+  }else if(this.value == "PAUSE"){
+    window.m.stopGame();
+    this.value = "PLAY";
+  }
+}
+
+/*
 function start() {
+  document.getElementById('canvas').style.zIndex = 15;
+  document.getElementById('splash').style.zIndex = 14;
+  game.bgm.play();
+  game.started = true;
   loop();
 }
-start();
+function stop() {
+  game.bgm.pause();
+  game.started = false;
+  window.cancelAnimationFrame(game.interval);
+}
+*/
 function loop() {
   game.interval = window.requestAnimationFrame(loop, game.canvas);
   game.canvas.width = game.canvas.width;
@@ -144,7 +183,7 @@ function loop() {
 
 }
 
-function asdf(g) {
+function itemLoaded(g) {
   g.loaded_items++;
 }
 
@@ -169,7 +208,8 @@ function resizeGame() {
   document.getElementById('canvas').width = window.innerWidth;
   document.getElementById('canvas').height = window.innerHeight;
   console.log("canvas: " + window.innerWidth + ", " + window.innerHeight)
-  game.init();
+  if(game.started)
+    game.init();
 }
 
 window.addEventListener('resize', resizeGame, false);

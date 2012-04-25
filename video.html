@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<head>
+<title>Puzzle</title>
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />
+<link rel="apple-touch-startup-image" sizes="768x1004" href="img/ipad-splash-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)" />
+<link rel="apple-touch-startup-image" sizes="1024x748" href="img/ipad-splash-landscape.png"  media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)" />
+<link rel="apple-touch-icon" href="images/logo.jpg" />
+<style type="text/css">
+  html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+  }
+  #canvas {
+    padding: 0px;
+    margin: 0px;
+    top:0;
+    left:0;
+    z-index: 30;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  #controls {
+    position: absolute;
+    width: 170px;
+    bottom: 0;
+    opacity: 0.8;
+    z-index: 16;
+  }
+  #game {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+  }
+  #splash {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(206,220,231); /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNjZWRjZTciIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNTk2YTcyIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyZWN0IHg9Ii01MCIgeT0iLTUwIiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-radial-gradient(center, ellipse cover,  rgba(206,220,231,1) 0%, rgba(89,106,114,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(206,220,231,1)), color-stop(100%,rgba(89,106,114,1))); /* Chrome,Safari4+ */
+    background: -webkit-radial-gradient(center, ellipse cover,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-radial-gradient(center, ellipse cover,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%); /* Opera 12+ */
+    background: -ms-radial-gradient(center, ellipse cover,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%); /* IE10+ */
+    background: radial-gradient(center, ellipse cover,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cedce7', endColorstr='#596a72',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
+    float: left;
+    z-index: 6;
+    display:table;
+  }
+  #title {
+    text-align: center;
+    font-family: "League-Gothic", Courier;
+    font-size: 9em; text-transform: uppercase;
+    color: #FFF;
+    text-shadow: 0px 2px 3px #666;
+    vertical-align:middle;
+    display:table-cell;
+  }
+  @font-face {
+    font-family: League-Gothic;
+    src: url("./css/League-Gothic.otf") format("opentype");
+  }
+  @font-face {
+    font-family: Museo;
+    src: url("Museo300-Regular.otf") format("opentype");
+  }
+  #github{
+    z-index: 7; position: absolute; top:0; right:0;
+  }
+  #start{
+    width: 100%; z-index: 17; position: absolute; top:45%; right:0; text-align: center;
+  }
+</style>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31142108-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+<body>
+  <a id="github" href="http://github.com/edse/puzzle" target"_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/camo.github.com/30f550e0d38ceb6ef5b81500c64d970b7fb0f028/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub"></a>
+  <!-- GAME -->
+  <div id="controls"><input type="button" id="play" value="PLAY" /></div>
+  <!--
+  <div id="start">
+    <input type="button" id="play" value="PLAY" />
+  </div>
+  -->
+  <div id="splash">
+    <div id="title">HTML5 PUZZLE-TUBE</div>
+  </div>
+  <div style="display: none;">
+    <video id="video" autoplay="true" loop="true">
+      <source src="BigBuckBunny_640x360.ogv" type="video/ogg" />
+      <source src="BigBuckBunny_640x360.mp4" type="video/mp4" />
+    </video>
+  </div>
+  <canvas id="canvas"></canvas>
+  <!-- DEBUG -->
+  <div id="debug" style="display:none">
+    <div>
+      pieces: <input type="text" name="p" id="p" />
+      pieces placed: <input type="text" name="pp" id="pp" />
+      lines: <input type="text" name="l" id="l" />
+      Pieces width: <input type="text" name="pw" id="pw" />
+      Pieces height: <input type="text" name="ph" id="ph" />
+    </div>
+    <div>
+      moving: <input type="text" name="moving" id="moving" />
+      over: <input type="text" name="over" id="over" />
+      selected: <input type="text" name="selected" id="selected" />
+    </div>
+    <div>
+      x: <input type="text" name="mx" id="mx" />
+      y: <input type="text" name="my" id="my" />
+    </div>
+    <div>
+      p1 x: <input type="text" name="px" id="px" />
+      p1 y: <input type="text" name="py" id="py" />
+    </div>
+    <div>
+      h1 x: <input type="text" name="hx" id="hx" />
+      h1 y: <input type="text" name="hy" id="hy" />
+    </div>
+    <div>
+      h2 x: <input type="text" name="hx2" id="hx2" />
+      h2 y: <input type="text" name="hy2" id="hy2" />
+    </div>
+  </div>
+  <!-- /DEBUG -->
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    var v = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+  
+    //var cw = Math.floor(canvas.clientWidth / 100);
+    //var ch = Math.floor(canvas.clientHeight / 100);
+    var cw = Math.floor(canvas.clientWidth);
+    var ch = Math.floor(canvas.clientHeight);
+    canvas.width = cw;
+    canvas.height = ch;
+  
+    v.addEventListener('play', function(){
+      draw(this,context,cw,ch);
+    },false);
+    
+  },false);
+
+  function draw(v,c,w,h) {
+    if(v.paused || v.ended) return false;
+    c.drawImage(v,0,0,w,h);
+    setTimeout(draw,20,v,c,w,h);
+  }
+  </script>
+
+</body>
+</html>
