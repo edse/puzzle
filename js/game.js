@@ -1,5 +1,6 @@
 function Game(canvas) {
   this.started = false;
+  this.num_lines = 2;
   console.log('start loading...')
   this.loadAssets();
 }
@@ -14,132 +15,116 @@ Game.prototype.loadAssets = function() {
   console.log("canvas: "+window.innerWidth+", "+window.innerHeight)
   //
 
-  this.items_to_load = 5;
   this.loaded_items = 0;
   this.loaded = false;
   this.interval = null;
   this.maxElapsedTime = 0;
   this.start_time = 0;
-
-  //IMAGE
-  this.img = new Image();
-  this.img.src = "img/rainbow500x400.png";
-  this.img.onload = this.loaded_items++;
-
-  //IMAGE
+  
+  this.assets = Array({
+      type: "image",
+      src: "img/rainbow500x400.png",
+      slug: "img"
+    },{
+      type: "image",
+      src: "img/spfc.jpg",
+      slug: "img2"
+    },{
+      type: "image",
+      src: "img/play.png",
+      slug: "btn_play"
+    },{
+      type: "image",
+      src: "img/pause.png",
+      slug: "btn_pause"
+    },{
+      type: "image",
+      src: "img/fullscreen.png",
+      slug: "btn_fullscreen"
+    },{
+      type: "image",
+      src: "img/nofullscreen.png",
+      slug: "btn_nofullscreen"
+    },{
+      type: "audio",
+      src: "audio/final/drip",
+      slug: "drip"
+    },{
+      type: "audio",
+      src: "audio/final/twang2",
+      slug: "twang"
+    },{
+      type: "audio",
+      src: "audio/final/Pictures-Sleep_on_soft_sheets",
+      slug: "bgm"
+    },{
+      type: "audio",
+      src: "audio/final/chimes",
+      slug: "chimes"
+    }
+  );
+  
+  this.items_to_load = this.assets.length;
+  loadAssets(this, this.assets);
+  
+  console.log(this.loaded_items+' assets loaded');
+    
+  if(Modernizr.fullscreen){
+    //BUTTON
+    this.full_btn = document.createElement("input");
+    this.full_btn.setAttribute("type", "button");
+    this.full_btn.setAttribute("value", "FULLSCREEN on");
+    this.full_btn.setAttribute("id", "full_btn");
+    this.full_btn.onclick = function() {
+      if(this.value == "FULLSCREEN off"){
+        if(screenfull){
+          screenfull.toggle();
+          this.value = "FULLSCREEN on";
+        }
+      }else if(this.value == "FULLSCREEN on"){
+        if(screenfull){
+          screenfull.toggle();
+          this.value = "FULLSCREEN off";
+        }
+      }
+    };
+    document.getElementById("controls").appendChild(this.full_btn);
+  }
+  
   /*
-  this.img_bg = new Image();
-  this.img_bg.src = "img/bg.jpg";
-  this.img_bg.onload = this.loaded_items++;
-  */
-  
-  //AUDIO
-  this.drip = document.createElement('audio');
-  var source= document.createElement('source');
-  if(this.drip.canPlayType('audio/mpeg;')) {
-    source.type= 'audio/mpeg';
-    source.src= 'audio/final/drip.mp3';
-  }else {
-    source.type= 'audio/ogg';
-    source.src= 'audio/final/drip.ogg';
-  }
-  this.drip.appendChild(source);
-  this.drip.addEventListener('canplaythrough', itemLoaded(this), false);
-  
-  //AUDIO
-  this.twang = document.createElement('audio');
-  var source= document.createElement('source');
-  if(this.twang.canPlayType('audio/mpeg;')) {
-    source.type= 'audio/mpeg';
-    source.src= 'audio/final/twang2.mp3';
-  }else {
-    source.type= 'audio/ogg';
-    source.src= 'audio/final/twang2.ogg';
-  }
-  this.twang.appendChild(source);
-  this.twang.addEventListener('canplaythrough', itemLoaded(this), false);
-
-  //AUDIO
-  this.bgm = document.createElement('audio');
-  var source= document.createElement('source');
-  if(this.bgm.canPlayType('audio/mpeg;')) {
-    source.type= 'audio/mpeg';
-    source.src= 'audio/final/Pictures-Sleep_on_soft_sheets.mp3';
-  }else {
-    source.type= 'audio/ogg';
-    source.src= 'audio/final/Pictures-Sleep_on_soft_sheets.ogg';
-  }
-  this.bgm.appendChild(source);
-  this.bgm.addEventListener('canplaythrough',  itemLoaded(this), false);
-  this.bgm.addEventListener('ended', function() {
-    this.currentTime = 0;
-    this.play();
-  }, false);
-  
-  //AUDIO
-  this.chimes = document.createElement('audio');
-  var source= document.createElement('source');
-  if(this.chimes.canPlayType('audio/mpeg;')) {
-    source.type= 'audio/mpeg';
-    source.src= 'audio/final/chimes.mp3';
-  }else {
-    source.type= 'audio/ogg';
-    source.src= 'audio/final/chimes.ogg';
-  }
-  this.chimes.appendChild(source);
-  this.chimes.addEventListener('canplaythrough', itemLoaded(this), false);
-      
-  //BUTTON
-  this.full_btn = document.createElement("input");
-  this.full_btn.setAttribute("type", "button");
-  this.full_btn.setAttribute("value", "FULLSCREEN on");
-  this.full_btn.setAttribute("id", "full_btn");
-  this.full_btn.onclick = function() {
-    if(this.value == "FULLSCREEN off"){
-      if(screenfull){
-        screenfull.toggle();
-        this.value = "FULLSCREEN on";
+  if(Modernizr.audio){
+    //BUTTON
+    this.bgm_btn = document.createElement("input");
+    this.bgm_btn.setAttribute("type", "button");
+    this.bgm_btn.setAttribute("value", "BGM off");
+    this.bgm_btn.setAttribute("id", "bgm_btn");
+    this.bgm_btn.onclick = function() {
+      if(this.value == "BGM off"){
+        window.m.stopBGM();
+        this.value = "BGM on";
+      }else if(this.value == "BGM on"){
+        window.m.startBGM();
+        this.value = "BGM off";
       }
-    }else if(this.value == "FULLSCREEN on"){
-      if(screenfull){
-        screenfull.toggle();
-        this.value = "FULLSCREEN off";
+    };
+    document.getElementById("controls").appendChild(this.bgm_btn);
+  
+    //BUTTON
+    this.sfx_btn = document.createElement("input");
+    this.sfx_btn.setAttribute("type", "button");
+    this.sfx_btn.setAttribute("value", "SFX off");
+    this.sfx_btn.setAttribute("id", "sfx_btn");
+    this.sfx_btn.onclick = function() {
+      if(this.value == "SFX off"){
+        window.m.stopSFX();
+        this.value = "SFX on";
+      }else if(this.value == "SFX on"){
+        window.m.startSFX();
+        this.value = "SFX off";
       }
-    }
-  };
-  document.getElementById("controls").appendChild(this.full_btn);
-
-  //BUTTON
-  this.bgm_btn = document.createElement("input");
-  this.bgm_btn.setAttribute("type", "button");
-  this.bgm_btn.setAttribute("value", "BGM off");
-  this.bgm_btn.setAttribute("id", "bgm_btn");
-  this.bgm_btn.onclick = function() {
-    if(this.value == "BGM off"){
-      window.m.stopBGM();
-      this.value = "BGM on";
-    }else if(this.value == "BGM on"){
-      window.m.startBGM();
-      this.value = "BGM off";
-    }
-  };
-  document.getElementById("controls").appendChild(this.bgm_btn);
-
-  //BUTTON
-  this.sfx_btn = document.createElement("input");
-  this.sfx_btn.setAttribute("type", "button");
-  this.sfx_btn.setAttribute("value", "SFX off");
-  this.sfx_btn.setAttribute("id", "sfx_btn");
-  this.sfx_btn.onclick = function() {
-    if(this.value == "SFX off"){
-      window.m.stopSFX();
-      this.value = "SFX on";
-    }else if(this.value == "SFX on"){
-      window.m.startSFX();
-      this.value = "SFX off";
-    }
-  };
-  document.getElementById("controls").appendChild(this.sfx_btn);
+    };
+    document.getElementById("controls").appendChild(this.sfx_btn);
+  }
 
   //BUTTON
   this.snap_btn = document.createElement("input");
@@ -170,6 +155,8 @@ Game.prototype.loadAssets = function() {
     game.init();
   };
   document.getElementById("controls").appendChild(this.scale_input);
+  */
+
 }
 
 Game.prototype.init = function(){
@@ -210,8 +197,7 @@ Game.prototype.init = function(){
   console.log(this.img.width+','+this.img.height)
   this.img_width = this.img.width;
   this.img_height = this.img.height;
-  this.num_lines = this.scale_input.value;
-  this.num_pieces = this.scale_input.value * this.scale_input.value;
+  this.num_pieces = this.num_lines * this.num_lines;
   this.piece_width = this.img_width / this.num_lines;
   this.piece_height = this.img_height / this.num_lines;
 
@@ -219,10 +205,7 @@ Game.prototype.init = function(){
   this.clock_interval = null;
   this.mouse = new Mouse(this);
 
-  if(this.snap_btn.value != "AUTO-SNAP on")
-    this.auto_snap = true;
-  else
-    this.auto_snap = false;
+  this.auto_snap = true;
 
   this.placeHolders();
   this.placePieces();
@@ -276,9 +259,14 @@ Game.prototype.placeHolders = function(){
 }
 
 Game.prototype.render = function() {
+  //bg
+  this.context.fillStyle = "rgba(0, 0, 0, 1)";
+  this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
   
   this.draw_bg();
-    
+
+  //this.draw_menu();
+
   //LOADING
   if(!this.loaded){
     if((this.items_to_load > 0)&&(this.loaded_items == this.items_to_load)){
@@ -331,9 +319,12 @@ Game.prototype.render = function() {
       this.selected.x = this.mouse.x;
       this.selected.y = this.mouse.y;
     }
-    
+
+    //REMAINING TIME
+    this.draw_remaining();
+
     //Game Over
-    if(this.remaining_time <=0 ){
+    if(this.remaining_time <= 0){
       window.m.stopGame();
       if(confirm('Timeup! Game Over! Wanna try again?')){
         this.is_over = false;
@@ -346,7 +337,7 @@ Game.prototype.render = function() {
         window.m.stopGame();
         if(confirm('Huhuhuh! You did it! Wanna try the next level?')){
           this.is_over = false;
-          this.scale_input.value++;
+          this.num_lines++;
           this.init();
           window.m.startGame();
         }
@@ -394,9 +385,38 @@ Game.prototype.draw_bg = function() {
   this.context.save();
 
   //bg
-  //this.context.fillStyle = '#FEFEFE';
-  //this.context.fillRect(0,0,this.canvas.width/this.scale,this.canvas.height/this.scale);
+  if(!this.scale)
+    this.scale = 1;
+  var grd = this.context.createRadialGradient((this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2, 0, (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2, this.canvas.width/this.scale);
+  grd.addColorStop(0, "rgb(225, 225, 225)");
+  grd.addColorStop(1, "rgb(0, 0, 0)");
+  this.context.fillStyle = grd;    
+  this.context.fillRect(0,0,this.canvas.width/this.scale,this.canvas.height/this.scale);
+
+  //puzzle images
+  var offsetx = (this.canvas.width/this.scale)/2-(this.img_width)/2;
+  var offsety = (this.canvas.height/this.scale)/2-(this.img_height)/2;
+  this.context.globalAlpha = 0.2;
+  this.context.drawImage(this.img, offsetx, offsety, this.img_width, this.img_height);
+  //this.context.drawImage(this.img2, offsetx+this.img_width, offsety, 200, 200);
   
+  this.context.restore();
+}
+
+Game.prototype.draw_menu = function() {
+  
+  this.context.save();
+
+  //bg
+  this.context.fillStyle = "rgba(0, 0, 0, 0.7)";
+  this.context.fillRect(0,0,this.canvas.width,80);
+
+  //btn
+  //this.context.globalAlpha = 0.7
+  this.context.drawImage(this.btn_play, 10, 5);
+  this.context.drawImage(this.btn_fullscreen, 90, 5);
+
+  /*
   //box
   this.context.strokeStyle = '#000000';
   this.context.lineWidth = 1;
@@ -407,7 +427,62 @@ Game.prototype.draw_bg = function() {
   var offsety = (this.canvas.height/this.scale)/2-(this.img_height)/2;
   this.context.globalAlpha = 0.2
   this.context.drawImage(this.img, offsetx, offsety);
+  */
+  this.context.restore();
+}
+
+Game.prototype.draw_splash = function() {
+  console.log('asdf');
+  this.context.save();
+
+  //bg  
+  var grd = this.context.createRadialGradient(this.canvas.width/2, this.canvas.height/2, 0, this.canvas.width/2, this.canvas.height/2, this.canvas.height);
+  //grd.addColorStop(0, "#8ED6FF"); // light blue
+  grd.addColorStop(0, "#CCC");
+  //grd.addColorStop(1, "#004CB3"); // dark blue
+  grd.addColorStop(1, "#666");
+  this.context.fillStyle = grd;    
+  this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
+
+  //btn
+  //this.context.globalAlpha = 0.7
+  this.context.drawImage(this.btn_play, this.canvas.width/2-this.btn_play.width/2, 300);
+
+  //txt
+  this.context.fillStyle = "rgba(255, 255, 255, 0.7)";
+  //this.context.fillStyle = '#FFF';
+  this.context.font = "bold "+Math.round(this.canvas.width/8)+"px Arial";
+  this.context.textBaseline = 'bottom';
+  this.context.textAlign = 'center';
+
+  this.context.shadowColor = "#000"
+  this.context.shadowOffsetX = 5;
+  this.context.shadowOffsetY = 5;
+  this.context.shadowBlur = 25;
+  this.context.lineWidth = 5;
+
+  this.context.strokeText("HTML5 PUZZLE", this.canvas.width/2, this.canvas.height/2);
+  this.context.fillText("HTML5 PUZZLE", this.canvas.width/2, this.canvas.height/2);
+
+  this.context.restore();
   
+  //this.draw_menu();
+}
+
+Game.prototype.draw_remaining = function() {
+  this.context.save();    
+  this.context.fillStyle = "rgba(255, 255, 255, 0.5)";
+  this.context.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+  this.context.font = "bold "+Math.round(this.canvas.width/8)+"px Arial";
+  this.context.textBaseline = 'middle';
+  this.context.textAlign = 'center';
+  this.context.shadowColor = "#000"
+  this.context.shadowOffsetX = 5;
+  this.context.shadowOffsetY = 5;
+  this.context.shadowBlur = 25;
+  this.context.lineWidth = 5;
+  this.context.strokeText(game.remaining_time, (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
+  this.context.fillText(game.remaining_time, (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
   this.context.restore();
 }
 

@@ -1,92 +1,161 @@
-<!DOCTYPE html>
-<html manifest="./puzzle.appcache">
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-<title>Puzzle</title>
-<meta name="apple-touch-fullscreen" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />
-<link rel="apple-touch-startup-image" sizes="768x1004" href="img/ipad-splash-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)" />
-<link rel="apple-touch-startup-image" sizes="1024x748" href="img/ipad-splash-landscape.png"  media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)" />
-<link rel="apple-touch-icon" href="images/logo.jpg" />
-<style type="text/css">
-  html, body {
-    width: 100%;
-    height: 100%;
-    padding: 0px;
-    margin: 0px;
-  }
-  #canvas {
-    padding: 0px;
-    margin: 0px;
-  }
-  #controls {
-    position: absolute;
-    width: 100%;
-    height: 8%;
-    bottom: 0;
-    opacity: 0.8;
-  }
-  #game {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-  }
-</style>
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-31142108-1']);
-  _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>HTML5 Puzzle - learning the new HTML5 technologies</title>
+  <meta name="title" content="HTML5 Puzzle - learning the new HTML5 technologies" />
+  <meta name="description" content="This is a learning tool for the new HTML5 technologies" />
+  <meta name="keywords" content="html, css, html5, css3, canvas, animation, requestanimationframe, fullscreen, fullscreen api, cache, application cache, application cache api, appcache, audio, audio api, video, video api, modernizr" />
+	<meta name="author" content="Emerson Estrella">
+	<link type="text/plain" rel="author" href="humans.txt" />
+
+	<meta name="viewport" content="width=device-width">
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script>
 </head>
 <body>
-  <!-- GAME -->
-  <canvas id="canvas"></canvas>
-  <div id="controls"></div>
-  <!-- DEBUG -->
-  <div id="debug" style="display:none">
-    <div>
-      pieces: <input type="text" name="p" id="p" />
-      pieces placed: <input type="text" name="pp" id="pp" />
-      lines: <input type="text" name="l" id="l" />
-      Pieces width: <input type="text" name="pw" id="pw" />
-      Pieces height: <input type="text" name="ph" id="ph" />
-    </div>
-    <div>
-      moving: <input type="text" name="moving" id="moving" />
-      over: <input type="text" name="over" id="over" />
-      selected: <input type="text" name="selected" id="selected" />
-    </div>
-    <div>
-      x: <input type="text" name="mx" id="mx" />
-      y: <input type="text" name="my" id="my" />
-    </div>
-    <div>
-      p1 x: <input type="text" name="px" id="px" />
-      p1 y: <input type="text" name="py" id="py" />
-    </div>
-    <div>
-      h1 x: <input type="text" name="hx" id="hx" />
-      h1 y: <input type="text" name="hy" id="hy" />
-    </div>
-    <div>
-      h2 x: <input type="text" name="hx2" id="hx2" />
-      h2 y: <input type="text" name="hy2" id="hy2" />
-    </div>
-  </div>
-  <!-- /DEBUG -->
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
-  <script src="./js/mouse.js"></script>
-  <script src="./js/point2D.js"></script>
-  <script src="./js/piece.js"></script>
-  <script src="./js/holder.js"></script>
-  <script src="./js/game.js"></script>
-  <script src="./js/init.js"></script>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="./">HTML5 Puzzle</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li id="home" class="active"><a href="./">Home</a></li>
+              <li id="play"><a href="javascript: start();">Play</a></li>
+              <li id="pause" class="control"><a href="javascript: pause();">Pause</a></li>
+              <li id="fullscreen" class="control"><a href="javascript: screenfull.toggle();">Fullscreen</a></li>
+              <li id="exitfullscreen" class="control"><a href="javascript: screenfull.toggle();">Exit Fullscreen</a></li>
+              <li id="bgm" class="control"><a href="javascript: window.m.startBGM();">BGM On</a></li>
+              <li id="bgmoff" class="control"><a href="javascript: window.m.stopBGM();">BGM Off</a></li>
+              <li id="sfx" class="control"><a href="javascript: window.m.startSFX();">SFX On</a></li>
+              <li id="sfxoff" class="control"><a href="javascript: window.m.stopSFX();">SFX Off</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit content">
+        <h1>HTML5 Puzzle</h1>
+        <p>I'm using this game for learning the new HTML5 technologies.</p>
+        <p>HTML5 features beeing used:</p>
+        <ul>
+          <li>Canvas</li>
+          <li>Image manipulation</li>
+          <li>RequestAnimationFrame</li>
+          <li>Fullscreen API</li>
+          <li>Application Cache API</li>
+          <li>Audio API</li>
+          <li>Mouse, keyboard, and touch support</li>
+        </ul>
+        <p><a class="btn btn-primary btn-large" href="javascript: start();">Play now &raquo;</a></p>
+      </div>
+
+      <!-- Example row of columns -->
+      <div class="row content">
+        <div class="span4">
+          <h2>Canvas, image manipulation, and RequestAnimationFrame</h2>
+           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+          <h2>Audio, and fullscreen APIs</h2>
+           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+       </div>
+        <div class="span4">
+          <h2>Application Cache / Offline browsing support</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer class="content">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">html5 Puzzle</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="html5puzzle.appspot.com" property="cc:attributionName" rel="cc:attributionURL">Emerson Estrella</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="html5rocks.com" rel="dct:source">html5rocks.com</a>.
+      </footer>
+
+    </div> <!-- /container -->
+    
+    <!-- Game canvas -->
+    <div id="game">
+      <div id="controls" style="display:none"><!-- <input type="button" id="play" value="PLAY" /> --></div>
+      <canvas id="canvas" style="display:none"></canvas>
+    </div>
+    <!-- DEBUG -->
+    <div id="debug" style="display:none">
+      <div>
+        pieces: <input type="text" name="p" id="p" />
+        pieces placed: <input type="text" name="pp" id="pp" />
+        lines: <input type="text" name="l" id="l" />
+        Pieces width: <input type="text" name="pw" id="pw" />
+        Pieces height: <input type="text" name="ph" id="ph" />
+      </div>
+      <div>
+        moving: <input type="text" name="moving" id="moving" />
+        over: <input type="text" name="over" id="over" />
+        selected: <input type="text" name="selected" id="selected" />
+      </div>
+      <div>
+        x: <input type="text" name="mx" id="mx" />
+        y: <input type="text" name="my" id="my" />
+      </div>
+      <div>
+        p1 x: <input type="text" name="px" id="px" />
+        p1 y: <input type="text" name="py" id="py" />
+      </div>
+      <div>
+        h1 x: <input type="text" name="hx" id="hx" />
+        h1 y: <input type="text" name="hy" id="hy" />
+      </div>
+      <div>
+        h2 x: <input type="text" name="hx2" id="hx2" />
+        h2 y: <input type="text" name="hy2" id="hy2" />
+      </div>
+    </div>
+    <!-- /DEBUG -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
+
+<script src="js/libs/bootstrap/bootstrap.min.js"></script>
+
+<script src="js/script.js"></script>
+<script>
+	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+<!-- Game scripts -->
+<script src="./js/mouse.js"></script>
+<script src="./js/point2D.js"></script>
+<script src="./js/piece.js"></script>
+<script src="./js/holder.js"></script>
+<script src="./js/game.js"></script>
+<script src="./js/init.js"></script>
 
 </body>
 </html>

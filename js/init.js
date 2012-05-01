@@ -68,8 +68,12 @@
     toggle : function(elem) {
       if(this.isFullscreen) {
         this.exit();
+        $('#fullscreen').show();
+        $('#exitfullscreen').hide();
       } else {
         this.request(elem);
+        $('#fullscreen').hide();
+        $('#exitfullscreen').show();
       }
     },
     onchange : function() {
@@ -88,6 +92,8 @@
 
 // GAME START
 var game = new Game();
+var interval = null;
+var gameInterval = null;
 game.debug = false;
 window.m = {
   game : game
@@ -99,68 +105,76 @@ window.m.intervClear = function() {
   clearInterval(interval)
 }
 window.m.stopGame = function() {
-  document.getElementById('canvas').style.zIndex = 14;
-  document.getElementById('splash').style.zIndex = 15;
-  document.getElementById('title').style.fontSize = "9em";
-  document.getElementById('title').style.opacity = 1;
+  clearInterval(gameInterval);
+  
+  game.started = false;
   window.m.stopSFX();
   window.m.stopBGM();
-  game.started = false;
   window.cancelAnimationFrame(game.interval);
+
+  $('#home').addClass('active');
+
+  $('#play').show();
+  $('.control').hide();
+  
+  $('#canvas').hide();
+  $('.content').show();
+
 }
 window.m.startGame = function() {
-  document.getElementById('canvas').style.zIndex = 15;
-  document.getElementById('splash').style.zIndex = 14;
-  document.getElementById('title').style.fontSize = "3em";
-  document.getElementById('title').style.opacity = 0.3;
+  gameInterval = setInterval(function() { game.remaining_time--; },1000);
+  
+  game.started = true;
+  //resizeGame();
+  
   window.m.startSFX();
   window.m.startBGM();
-  game.started = true;
   loop();
+
+  $('#home').removeClass('active');
+  
+  $('#play').hide();
+  $('.control').show();
+  $('#exitfullscreen, #bgm, #sfx').hide();
+  
+
+  $('#canvas').show();
+  $('.content').hide();
 }
 window.m.stopSFX = function() {
   window.m.game.drip.volume = 0.0;
   window.m.game.twang.volume = 0.0;
   window.m.game.drip.pause();
   window.m.game.twang.pause();
+  $('#sfxoff').hide();
+  $('#sfx').show();
 }
 window.m.startSFX = function() {
   window.m.game.drip.volume = 1.0;
   window.m.game.twang.volume = 1.0;
+  $('#sfxoff').show();
+  $('#sfx').hide();
 }
 window.m.stopBGM = function() {
   window.m.game.bgm.volume = 0.0;
   window.m.game.bgm.pause();
+  $('#bgmoff').hide();
+  $('#bgm').show();
 }
 window.m.startBGM = function() {
   window.m.game.bgm.volume = 1.0;
   window.m.game.bgm.play();
+  $('#bgmoff').show();
+  $('#bgm').hide();
 }
 
-document.getElementById('play').onclick = function() {
-  if(this.value == "PLAY"){
-    window.m.startGame();
-    this.value = "PAUSE";
-  }else if(this.value == "PAUSE"){
-    window.m.stopGame();
-    this.value = "PLAY";
-  }
-}
-
-/*
 function start() {
-  document.getElementById('canvas').style.zIndex = 15;
-  document.getElementById('splash').style.zIndex = 14;
-  game.bgm.play();
-  game.started = true;
-  loop();
+  window.m.startGame();
 }
-function stop() {
-  game.bgm.pause();
-  game.started = false;
-  window.cancelAnimationFrame(game.interval);
+function pause() {
+  window.m.stopGame();
 }
-*/
+
 function loop() {
   game.interval = window.requestAnimationFrame(loop, game.canvas);
   game.canvas.width = game.canvas.width;
@@ -174,13 +188,46 @@ function loop() {
   if(elapsed > game.maxElapsedTime)
     game.maxElapsedTime = elapsed;
 
-  game.context.fillText("scale: " + game.scale, 50, 30);
-  game.context.fillText("loaded items: " + game.loaded_items, 50, 40);
-  game.context.fillText(">>> " + elapsed, 50, 50);
-  game.context.fillText("maxElapsedTime>>> " + game.maxElapsedTime, 50, 60);
-  game.context.fillText(game.remaining_time, 50, 80);
-  game.context.fillText(game.auto_snap, 50, 100);
+  game.context.fillText("scale: " + game.scale, 50, 70);
+  game.context.fillText("loaded items: " + game.loaded_items, 50, 80);
+  game.context.fillText(">>> " + elapsed, 50, 90);
+  game.context.fillText("maxElapsedTime>>> " + game.maxElapsedTime, 50, 100);
+  game.context.fillText(game.remaining_time, 50, 110);
+  game.context.fillText(game.auto_snap, 50, 120);
 
+}
+
+function loadAssets(g,assets) {
+  //alert('>>'+atttr);
+  for(i=0; i<assets.length; i++){
+    if(assets[i].type == "image"){
+      //IMAGE
+      eval("g."+assets[i].slug+' = new Image();');
+      eval("g."+assets[i].slug+'.src = "'+assets[i].src+'";');
+      eval("g."+assets[i].slug+'.onload = g.loaded_items++;');
+    }
+    else if(assets[i].type == "audio"){
+      //AUDIO
+      eval("g."+assets[i].slug+' = document.createElement(\'audio\');');
+      eval("g."+assets[i].slug+'.addEventListener(\'canplaythrough\', itemLoaded(g), false);');
+      var source= document.createElement('source');
+      if(Modernizr.audio.ogg){
+        source.type= 'audio/ogg';
+        source.src= assets[i].src+'.ogg';
+      }
+      else if(Modernizr.audio.mp3){
+        source.type= 'audio/mpeg';
+        source.src= assets[i].src+'.mp3';
+      }
+      if(source.src != ""){
+        eval("g."+assets[i].slug+'.appendChild(source);');
+      }
+      else{
+        // no MP3 or OGG audio support
+        g.itens_to_load--;
+      }
+    }
+  }
 }
 
 function itemLoaded(g) {
@@ -210,7 +257,10 @@ function resizeGame() {
   console.log("canvas: " + window.innerWidth + ", " + window.innerHeight)
   if(game.started)
     game.init();
+  else
+    game.draw_splash();
 }
 
 window.addEventListener('resize', resizeGame, false);
 window.addEventListener('orientationchange', resizeGame, false);
+window.addEventListener('load', game.draw_splash(), false);

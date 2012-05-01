@@ -22,15 +22,26 @@ function Mouse(game) {
   //this.element = window;
   this.element = document.getElementById('canvas');
   
-  this.element.addEventListener('mousemove', function(e){ me.mousemove(e) }, false);
-  this.element.addEventListener('mousedown', function(e){ me.mousedown(e) }, false);
-  this.element.addEventListener('mouseup', function(e){ me.mouseup(e) }, false);
-  this.element.addEventListener("keyup", function(e){ me.keyup(e) }, false);
-  
-  this.element.addEventListener('touchstart', function(e) { me.touchstart(e) }, false);
-  this.element.addEventListener('touchmove', function(e) { me.touchmove(e) }, false);
-  this.element.addEventListener('touchend', function(e) { me.touchend(e) }, false);
-  
+  if(!Modernizr.touch){
+    this.element.addEventListener('mousemove', function(e){ me.mousemove(e) }, false);
+    this.element.addEventListener('mousedown', function(e){ me.mousedown(e) }, false);
+    this.element.addEventListener('mouseup', function(e){ me.mouseup(e) }, false);
+    //window.addEventListener('keyup', function(e){ me.keyup(e) }, false);
+  }else{
+    this.element.addEventListener('touchstart', function(e) { me.touchstart(e) }, false);
+    this.element.addEventListener('touchmove', function(e) { me.touchmove(e) }, false);
+    this.element.addEventListener('touchend', function(e) { me.touchend(e) }, false);
+  }
+}
+
+
+/*****
+ *
+ *   keyup
+ *
+ *****/
+Mouse.prototype.keyup = function(e) {
+  console.log(e.keyCode)
 }
 
 /*****
@@ -117,12 +128,6 @@ Mouse.prototype.mousemove = function(e) {
     yy = e.clientY + body_scrollTop + element_scrollTop;
   }
   
-  //xx -= offsetLeft;
-  //yy -= offsetTop;
-  
-  //xx += document.getElementById("game").style.marginLeft*2;
-  //yy += document.getElementById("game").style.marginTop*2;
-  
   xx = xx/this.game.scale;
   yy = yy/this.game.scale;
   
@@ -207,9 +212,6 @@ Mouse.prototype.mouseup = function(e) {
  *
  *****/
 Mouse.prototype.touchstart = function(e) {
-  //if(this.game.debug)
-    console.log('touch start');
-
   this.game.drip.play();
 
   e.preventDefault();
