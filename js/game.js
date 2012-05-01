@@ -240,6 +240,7 @@ Game.prototype.placeHolders = function(){
   var pieces = 1;
   var offsetx = (this.canvas.width/this.scale)/2-(this.img_width)/2;
   var offsety = (this.canvas.height/this.scale)/2-(this.img_height)/2;
+  offsety += 40;
   for(var i = 0; i < this.num_lines; ++i) {
     for(var j = 0; j < this.num_lines; ++j) {
       temp = new Holder(
@@ -274,7 +275,7 @@ Game.prototype.render = function() {
       var t = setTimeout("game.init();", 3000);
       //this.init();
     }else{
-      this.context.fillText("loading...", 50, 20);
+      this.draw_loading();
     }
   }
   else{
@@ -325,8 +326,9 @@ Game.prototype.render = function() {
 
     //Game Over
     if(this.remaining_time <= 0){
-      window.m.stopGame();
-      if(confirm('Timeup! Game Over! Wanna try again?')){
+      this.remaining_time = 0;
+      window.m.pauseGame();
+      if(confirm('Timeup! Try again')){
         this.is_over = false;
         this.init();
         window.m.startGame();
@@ -334,8 +336,8 @@ Game.prototype.render = function() {
     }
     else{
       if(this.is_over){
-        window.m.stopGame();
-        if(confirm('Huhuhuh! You did it! Wanna try the next level?')){
+        window.m.pauseGame();
+        if(confirm('Yes, you did it! Try the next level')){
           this.is_over = false;
           this.num_lines++;
           this.init();
@@ -396,38 +398,11 @@ Game.prototype.draw_bg = function() {
   //puzzle images
   var offsetx = (this.canvas.width/this.scale)/2-(this.img_width)/2;
   var offsety = (this.canvas.height/this.scale)/2-(this.img_height)/2;
+  offsety += 40;
   this.context.globalAlpha = 0.2;
   this.context.drawImage(this.img, offsetx, offsety, this.img_width, this.img_height);
   //this.context.drawImage(this.img2, offsetx+this.img_width, offsety, 200, 200);
   
-  this.context.restore();
-}
-
-Game.prototype.draw_menu = function() {
-  
-  this.context.save();
-
-  //bg
-  this.context.fillStyle = "rgba(0, 0, 0, 0.7)";
-  this.context.fillRect(0,0,this.canvas.width,80);
-
-  //btn
-  //this.context.globalAlpha = 0.7
-  this.context.drawImage(this.btn_play, 10, 5);
-  this.context.drawImage(this.btn_fullscreen, 90, 5);
-
-  /*
-  //box
-  this.context.strokeStyle = '#000000';
-  this.context.lineWidth = 1;
-  this.context.strokeRect(1,1,this.canvas.width/this.scale-2,this.canvas.height/this.scale-2);
-
-  //puzzle image
-  var offsetx = (this.canvas.width/this.scale)/2-(this.img_width)/2;
-  var offsety = (this.canvas.height/this.scale)/2-(this.img_height)/2;
-  this.context.globalAlpha = 0.2
-  this.context.drawImage(this.img, offsetx, offsety);
-  */
   this.context.restore();
 }
 
@@ -484,6 +459,41 @@ Game.prototype.draw_remaining = function() {
   this.context.strokeText(game.remaining_time, (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
   this.context.fillText(game.remaining_time, (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
   this.context.restore();
+}
+
+Game.prototype.draw_loading = function() {
+  this.context.save();    
+  this.context.fillStyle = "rgba(255, 255, 255, 0.8)";
+  this.context.strokeStyle = 'rgba(0, 0, 0, 0.6)';
+  this.context.font = "bold "+Math.round(this.canvas.width/8)+"px Arial";
+  this.context.textBaseline = 'middle';
+  this.context.textAlign = 'center';
+  this.context.shadowColor = "#000"
+  this.context.shadowOffsetX = 5;
+  this.context.shadowOffsetY = 5;
+  this.context.shadowBlur = 25;
+  this.context.lineWidth = 5;
+  this.context.strokeText("LOADING", (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
+  this.context.fillText("LOADING", (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
+  this.context.restore();
+  //this.context.fillText("loading...", 50, 60);
+}
+Game.prototype.draw_gameover = function() {
+  this.context.save();    
+  this.context.fillStyle = "rgba(255, 255, 255, 0.8)";
+  this.context.strokeStyle = 'rgba(0, 0, 0, 0.6)';
+  this.context.font = "bold "+Math.round(this.canvas.width/8)+"px Arial";
+  this.context.textBaseline = 'middle';
+  this.context.textAlign = 'center';
+  this.context.shadowColor = "#000"
+  this.context.shadowOffsetX = 5;
+  this.context.shadowOffsetY = 5;
+  this.context.shadowBlur = 25;
+  this.context.lineWidth = 5;
+  this.context.strokeText("TIME UP", (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
+  this.context.fillText("TIME UP", (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
+  this.context.restore();
+  //this.context.fillText("gameover", 50, 60);
 }
 
 ////////////////////////////////////////

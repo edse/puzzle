@@ -21,6 +21,6 @@ body {
   opacity: 0.98;
 }
 
-#pause, #bgm, #sfx, #bgmoff, #sfxoff, #fullscreen, #exitfullscreen{
+#pause, #bgm, #sfx, #bgmoff, #sfxoff, #fullscreen, #exitfullscreen, #autosnap, #autosnapoff {
   display: none;
 } 

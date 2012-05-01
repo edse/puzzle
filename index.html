@@ -2,7 +2,7 @@
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" manifest="./puzzle.appcache"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 
 	<meta charset="utf-8">
@@ -39,6 +39,8 @@
               <li id="home" class="active"><a href="./">Home</a></li>
               <li id="play"><a href="javascript: start();">Play</a></li>
               <li id="pause" class="control"><a href="javascript: pause();">Pause</a></li>
+              <li id="autosnap" class="control"><a href="javascript: window.m.autoSnap();">Auto-Snap On</a></li>
+              <li id="autosnapoff" class="control"><a href="javascript: window.m.autoSnapOff();">Auto-Snap Off</a></li>
               <li id="fullscreen" class="control"><a href="javascript: screenfull.toggle();">Fullscreen</a></li>
               <li id="exitfullscreen" class="control"><a href="javascript: screenfull.toggle();">Exit Fullscreen</a></li>
               <li id="bgm" class="control"><a href="javascript: window.m.startBGM();">BGM On</a></li>
@@ -56,8 +58,7 @@
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit content">
         <h1>HTML5 Puzzle</h1>
-        <p>I'm using this game for learning the new HTML5 technologies.</p>
-        <p>HTML5 features beeing used:</p>
+        <p>I'm using this game for learning some of the "new" HTML5 features:</p>
         <ul>
           <li>Canvas</li>
           <li>Image manipulation</li>
@@ -67,32 +68,33 @@
           <li>Audio API</li>
           <li>Mouse, keyboard, and touch support</li>
         </ul>
-        <p><a class="btn btn-primary btn-large" href="javascript: start();">Play now &raquo;</a></p>
+        <p><a class="btn btn-primary btn-large" href="javascript: start();">Play &raquo;</a></p>
+        
       </div>
 
       <!-- Example row of columns -->
       <div class="row content">
         <div class="span4">
           <h2>Canvas, image manipulation, and RequestAnimationFrame</h2>
-           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+          <p>The game runs on canvas. It loads an image and slice it in a few pieces. The RequestAnimationFrame provide power efficient and smooth animations.</p>
+          <!-- <p><a class="btn" href="#">View details &raquo;</a></p> -->
         </div>
         <div class="span4">
           <h2>Audio, and fullscreen APIs</h2>
-           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+          <p>Background music and sound effects using the Audio API. Also fullscreen mode support.</p>
+          <!-- <p><a class="btn" href="#">View details &raquo;</a></p> -->
        </div>
         <div class="span4">
           <h2>Application Cache / Offline browsing support</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+          <p>You can keep playing even when you go offline.</p>
+          <!-- <p><a class="btn" href="#">View details &raquo;</a></p> -->
         </div>
       </div>
 
       <hr>
 
       <footer class="content">
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">html5 Puzzle</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="html5puzzle.appspot.com" property="cc:attributionName" rel="cc:attributionURL">Emerson Estrella</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="html5rocks.com" rel="dct:source">html5rocks.com</a>.
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">html5 Puzzle</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://html5puzzle.appspot.com" property="cc:attributionName" rel="cc:attributionURL">Emerson Estrella</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="http://html5rocks.com" rel="dct:source">html5rocks.com</a>.
       </footer>
 
     </div> <!-- /container -->

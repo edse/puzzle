@@ -123,23 +123,22 @@ window.m.stopGame = function() {
 }
 window.m.startGame = function() {
   gameInterval = setInterval(function() { game.remaining_time--; },1000);
-  
   game.started = true;
   //resizeGame();
-  
   window.m.startSFX();
   window.m.startBGM();
   loop();
-
   $('#home').removeClass('active');
-  
-  $('#play').hide();
-  $('.control').show();
-  $('#exitfullscreen, #bgm, #sfx').hide();
-  
+  $('#canvas, .control').show();
+  $('.content, #play, #exitfullscreen, #bgm, #sfx, #autosnap').hide();
+}
+window.m.pauseGame = function() {
+  clearInterval(gameInterval);
+  game.started = false;
+  window.cancelAnimationFrame(game.interval);
 
-  $('#canvas').show();
-  $('.content').hide();
+  $('#play').show();
+  $('.control').hide();  
 }
 window.m.stopSFX = function() {
   window.m.game.drip.volume = 0.0;
@@ -167,12 +166,25 @@ window.m.startBGM = function() {
   $('#bgmoff').show();
   $('#bgm').hide();
 }
+window.m.autoSnap = function() {
+  window.m.game.auto_snap = true;
+  $('#autosnapoff').show();
+  $('#autosnap').hide();
+}
+window.m.autoSnapOff = function() {
+  window.m.game.auto_snap = false;
+  $('#autosnapoff').hide();
+  $('#autosnap').show();
+}
 
 function start() {
   window.m.startGame();
 }
-function pause() {
+function stop() {
   window.m.stopGame();
+}
+function pause() {
+  window.m.pauseGame();
 }
 
 function loop() {
@@ -188,12 +200,14 @@ function loop() {
   if(elapsed > game.maxElapsedTime)
     game.maxElapsedTime = elapsed;
 
+  /*
   game.context.fillText("scale: " + game.scale, 50, 70);
   game.context.fillText("loaded items: " + game.loaded_items, 50, 80);
   game.context.fillText(">>> " + elapsed, 50, 90);
   game.context.fillText("maxElapsedTime>>> " + game.maxElapsedTime, 50, 100);
   game.context.fillText(game.remaining_time, 50, 110);
   game.context.fillText(game.auto_snap, 50, 120);
+  */
 
 }
 
@@ -233,23 +247,6 @@ function loadAssets(g,assets) {
 function itemLoaded(g) {
   g.loaded_items++;
 }
-
-function mediaSupport(mimetype, container) {
-  var elem = document.createElement(container);
-  if( typeof elem.canPlayType == 'function') {
-    var playable = elem.canPlayType(mimetype);
-    if((playable.toLowerCase() == 'maybe') || (playable.toLowerCase() == 'probably')) {
-      return true;
-    }
-  }
-  return false;
-}
-
-/*
- //Handle the melody
- if(mediaSupport('audio/ogg; codecs=vorbis', 'audio') ||
- mediaSupport('audio/mpeg', 'audio')) {
- */
 
 function resizeGame() {
   document.getElementById('canvas').width = window.innerWidth;
