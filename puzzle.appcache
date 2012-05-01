@@ -1,13 +1,20 @@
 CACHE MANIFEST
 # Renew this hash every time to invalidate current cache
-# hash be4046f4743d321052bd666758e6d8e0
+# hash be4046f4743d321052bd666758eedse0
 
 # Files to ask browsers to cache even when user hits reload
 CACHE:
 
 ./index.html
 ./img/rainbow500x400.png
-./img/rainbow125x100.png
+./audio/final/drip.ogg
+./audio/final/twang2.ogg
+./audio/final/Pictures-Sleep_on_soft_sheets.ogg
+./audio/final/chimes.ogg
+./audio/final/drip.mp3
+./audio/final/twang2.mp3
+./audio/final/Pictures-Sleep_on_soft_sheets.mp3
+./audio/final/chimes.mp3
 ./js/mouse.js
 ./js/point2D.js
 ./js/piece.js
