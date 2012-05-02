@@ -33,6 +33,7 @@
   }
 }());
 
+/*
 // A robust polyfill for fullscreen
 (function(window, document) {'use strict';
   var keyboardAllowed = 'ALLOW_KEYBOARD_INPUT' in Element, methods = (function() {
