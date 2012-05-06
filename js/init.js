@@ -90,6 +90,7 @@
   });
   window.screenfull = screenfull;
 })(window, document);
+*/
 
 // GAME START
 var game = new Game();
@@ -118,7 +119,7 @@ window.m.stopGame = function() {
   $('#play').show();
   $('.control').hide();
   
-  $('#canvas').hide();
+  $('#canvas, #canvas_bg').hide();
   $('.content').show();
 
 }
@@ -130,7 +131,7 @@ window.m.startGame = function() {
   window.m.startBGM();
   loop();
   $('#home').removeClass('active');
-  $('#canvas, .control').show();
+  $('#canvas, #canvas_bg, .control').show();
   $('.content, #play, #exitfullscreen, #bgm, #sfx, #autosnap').hide();
 }
 window.m.pauseGame = function() {
@@ -190,25 +191,24 @@ function pause() {
 
 function loop() {
   game.interval = window.requestAnimationFrame(loop, game.canvas);
-  game.canvas.width = game.canvas.width;
-  game.context.scale(game.scale, game.scale);
+
   game.render();
 
   var elapsed = game.getTimer() - game.time;
   game.time = game.getTimer();
-
   //elapsed = Math.min(20, Math.max(-20, elapsed));
   if(elapsed > game.maxElapsedTime)
     game.maxElapsedTime = elapsed;
 
-  /*
-  game.context.fillText("scale: " + game.scale, 50, 70);
-  game.context.fillText("loaded items: " + game.loaded_items, 50, 80);
-  game.context.fillText(">>> " + elapsed, 50, 90);
-  game.context.fillText("maxElapsedTime>>> " + game.maxElapsedTime, 50, 100);
-  game.context.fillText(game.remaining_time, 50, 110);
-  game.context.fillText(game.auto_snap, 50, 120);
-  */
+  game.context.textAlign = 'left';
+  game.context.fillStyle = "rgba(255, 255, 255, 1)";
+  game.context.font = "bold 12px Arial";
+  game.context.fillText("scale: " + game.scale, 50, 90);
+  game.context.fillText("loaded items: " + game.loaded_items, 50, 100);
+  game.context.fillText(">>> " + elapsed, 50, 110);
+  game.context.fillText("maxElapsedTime>>> " + game.maxElapsedTime, 50, 120);
+  game.context.fillText(game.remaining_time, 50, 130);
+  game.context.fillText("auto-snap: "+game.auto_snap, 50, 140);
 
 }
 
@@ -249,16 +249,13 @@ function itemLoaded(g) {
   g.loaded_items++;
 }
 
-function resizeGame() {
-  document.getElementById('canvas').width = window.innerWidth;
-  document.getElementById('canvas').height = window.innerHeight;
-  console.log("canvas: " + window.innerWidth + ", " + window.innerHeight)
-  if(game.started)
+function resizeGame() {  
+  console.log("window: " + window.innerWidth + ", " + window.innerHeight)
+  if(game.started){
+    game.resized = true;
     game.init();
-  else
-    game.draw_splash();
+  }
 }
 
 window.addEventListener('resize', resizeGame, false);
 window.addEventListener('orientationchange', resizeGame, false);
-window.addEventListener('load', game.draw_splash(), false);

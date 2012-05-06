@@ -51,6 +51,14 @@ function Piece(id, game, width, height, x, y, startPoint, target, holder, movebl
 
 Piece.prototype.draw = function() {
   if((!this.moveble)&&(!this.placed)){
+    this.game.context.globalAlpha = 1
+    //this.game.context.clearRect(0, 0, game.canvas.width, game.canvas.height);
+    //this.game.context.clearRect(Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2), this.game.piece_width, this.game.piece_height);
+    //this.game.context.fillRect(Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2), this.game.piece_width, this.game.piece_height);
+    
+    //this.game.context.drawImage(this.game.context_bg.getImageData(Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2), this.game.piece_width, this.game.piece_height), Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2), this.game.piece_width, this.game.piece_height, Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2), this.game.piece_width, this.game.piece_height );
+    //this.game.context.putImageData(this.game.context_bg.getImageData(Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2), this.game.piece_width, this.game.piece_height), Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2));
+    
     this.p = this.p*1.1;
     this.startPoint.x = this.startPoint.x + this.p;
     this.startPoint.y = this.m * this.startPoint.x + this.b;
@@ -70,16 +78,18 @@ Piece.prototype.draw = function() {
       this.iniPoint = new Point2D(this.x,this.y)
     }
    
-    this.game.context.save();
-    this.game.context.globalAlpha = 1;
-    this.game.context.beginPath();
-
+    //this.game.context.save();
+    //this.game.context.globalAlpha = 1;
+    //this.game.context.beginPath();
+    
+    //this.game.context.putImageData(this.game.context_bg.getImageData(Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2), this.game.piece_width, this.game.piece_height), Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2));
+    //this.game.context.globalAlpha = 1
     this.game.context.drawImage(this.game.img, this.holder.column*this.game.piece_width, this.holder.line*this.game.piece_height, this.game.piece_width, this.game.piece_height, 
       this.startPoint.x-this.game.piece_width/2, this.startPoint.y-this.game.piece_height/2, this.game.piece_width, this.game.piece_height);
 
   }
   else{
-    this.game.context.save();
+    //this.game.context.save();
     
     if(this.placed)
       this.game.context.globalAlpha = 1
@@ -124,21 +134,26 @@ Piece.prototype.draw = function() {
     }
   
     //piece.draw();
-    this.game.context.beginPath();
-    
+    //this.game.context.beginPath();
+    //this.game.context.fillRect(Math.round(this.startPoint.x-this.game.piece_width/2), Math.round(this.startPoint.y-this.game.piece_height/2), this.game.piece_width, this.game.piece_height);
+    /*
+    this.game.context.drawImage(this.game.img, this.holder.column*this.game.piece_width, this.holder.line*this.game.piece_height, this.game.piece_width, this.game.piece_height, 
+      Math.round(this.x-this.game.piece_width/2), Math.round(this.y-this.game.piece_height/2), this.game.piece_width, this.game.piece_height);
+    */
     this.game.context.drawImage(this.game.img, this.holder.column*this.game.piece_width, this.holder.line*this.game.piece_height, this.game.piece_width, this.game.piece_height, 
       this.x-this.game.piece_width/2, this.y-this.game.piece_height/2, this.game.piece_width, this.game.piece_height);
+
   
     if(!this.game.is_over){
       //this.game.context.strokeRect(this.x-this.width/2,this.y-this.height/2,this.width,this.height);
-      this.game.context.fillRect(this.x-this.width/2,this.y-this.height/2,this.width,this.height);
-      this.game.context.globalAlpha = 1
+      //this.game.context.fillRect(this.x-this.width/2,this.y-this.height/2,this.width,this.height);
+      //this.game.context.globalAlpha = 1
       //this.game.context.fillStyle = "rgba(0, 0, 0, 1)";
       //this.game.context.fillText(this.id, this.x-3, this.y+3);
     }
     
-    this.game.context.closePath();
-    this.game.context.restore();
+    //this.game.context.closePath();
+    //this.game.context.restore();
   }
   
   if(this.game.debug)

@@ -12,12 +12,21 @@ body {
   margin: 0px;
   top:0;
   left:0;
+  z-index: 11;
+  position: absolute;
+}
+
+#canvas_bg {
+  padding: 0px;
+  margin: 0px;
+  top:0;
+  left:0;
   z-index: 10;
   position: absolute;
 }
 
 .navbar{
-  z-index: 11;
+  z-index: 12;
   opacity: 0.98;
 }
 
