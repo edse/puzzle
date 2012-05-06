@@ -63,29 +63,6 @@ Game.prototype.loadAssets = function() {
   loadAssets(this, this.assets);
   
   console.log(this.loaded_items+' assets loaded');
-      
-  if(Modernizr.fullscreen){
-    //BUTTON
-    this.full_btn = document.createElement("input");
-    this.full_btn.setAttribute("type", "button");
-    this.full_btn.setAttribute("value", "FULLSCREEN on");
-    this.full_btn.setAttribute("id", "full_btn");
-    this.full_btn.onclick = function() {
-      if(this.value == "FULLSCREEN off"){
-        if(screenfull){
-          screenfull.toggle();
-          this.value = "FULLSCREEN on";
-        }
-      }else if(this.value == "FULLSCREEN on"){
-        if(screenfull){
-          screenfull.toggle();
-          this.value = "FULLSCREEN off";
-        }
-      }
-    };
-    document.getElementById("controls").appendChild(this.full_btn);
-  }
-
 }
 
 Game.prototype.apply_scale = function(){
@@ -196,17 +173,6 @@ Game.prototype.placeHolders = function(){
 }
 
 Game.prototype.render = function() {
-  //this.context.clearRect(0, 0, game.canvas.width, game.canvas.height);
-  //this.canvas.width = this.canvas.width;
-  
-  //this.canvas.width = this.canvas.width;
-  //game.context.scale(game.scale, game.scale);
-  //this.context.clearRect(0, 0, game.canvas.width, game.canvas.height);
-  
-  //bg
-  //this.context.fillStyle = "rgba(0, 0, 0, 1)";
-  //this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
-  
   this.draw_bg();
 
   //LOADING
@@ -214,7 +180,6 @@ Game.prototype.render = function() {
     if((this.items_to_load > 0)&&(this.loaded_items == this.items_to_load)){
       this.items_to_load = 0;
       var t = setTimeout("game.init();", 1500);
-      //this.init();
     }else{
       this.draw_loading();
     }
@@ -328,53 +293,15 @@ Game.prototype.draw_bg = function() {
   if(!this.scale) this.scale = 1;
   this.context.fillStyle = "rgba(125, 125, 125, 1)";
   this.context_bg.fillRect(0,0,this.canvas_bg.width/this.scale,this.canvas_bg.height/this.scale);
-  //this.context.save();
-  //bg
-  /*
-  if(!this.scale)
-    this.scale = 1;
-  var grd = this.context_bg.createRadialGradient((this.canvas_bg.width/this.scale)/2, (this.canvas_bg.height/this.scale)/2, 0, (this.canvas_bg.width/this.scale)/2, (this.canvas_bg.height/this.scale)/2, this.canvas_bg.width/this.scale);
-  grd.addColorStop(0, "rgb(225, 225, 225)");
-  grd.addColorStop(1, "rgb(0, 0, 0)");
-  this.context_bg.fillStyle = grd;    
-  this.context_bg.fillRect(0,0,this.canvas_bg.width/this.scale,this.canvas_bg.height/this.scale);
-  */
-  /*
-
-  //puzzle images
-  var offsetx = (this.canvas.width/this.scale)/2-(this.img_width)/2;
-  var offsety = (this.canvas.height/this.scale)/2-(this.img_height)/2;
-  offsety += 40;
-  this.context.globalAlpha = 0.2;
-  this.context.drawImage(this.img, offsetx, offsety, this.img_width, this.img_height);
-  //this.context.drawImage(this.img2, offsetx+this.img_width, offsety, 200, 200);
-  
-  //this.context.restore();
-  */
-  //puzzle images
+  //puzzle image
   var offsetx = Math.round(this.scaled_width-(this.img_width)/2);
   var offsety = Math.round(this.scaled_height-(this.img_height)/2);
   offsety += 40;
   this.context_bg.globalAlpha = 0.2;
   this.context_bg.drawImage(this.img, offsetx, offsety, this.img_width, this.img_height);
-
 }
 
 Game.prototype.draw_remaining = function() {
-  /*
-  //this.context.save();
-  this.context.fillStyle = "rgba(255, 255, 255, 0.5)";
-  this.context.strokeStyle = 'rgba(0, 0, 0, 0.4)';
-  this.context.font = "bold "+Math.round(this.canvas.width/8)+"px Arial";
-  this.context.textBaseline = 'middle';
-  this.context.textAlign = 'center';
-  this.context.shadowColor = "#000"
-  this.context.shadowOffsetX = 5;
-  this.context.shadowOffsetY = 5;
-  this.context.shadowBlur = 25;
-  this.context.lineWidth = 5;
-  this.context.strokeText(game.remaining_time, (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
-  */
   this.fade1 = this.fade1+(0.010*this.alpha);
   if(this.fade1 >= 0.6)
     this.alpha = -1;
@@ -386,10 +313,7 @@ Game.prototype.draw_remaining = function() {
   this.context.font = "bold "+this.font_size+"px Arial";
   this.context.textBaseline = 'middle';
   this.context.textAlign = 'center';
-  
   this.context.fillText(game.remaining_time, this.scaled_width, this.scaled_height);
-
-  //this.context.restore();
 }
 
 Game.prototype.draw_loading = function() {
@@ -403,46 +327,11 @@ Game.prototype.draw_loading = function() {
   this.context.font = "bold "+this.font_size+"px Arial";
   this.context.textBaseline = 'middle';
   this.context.textAlign = 'center';
-  /*
-  this.context.shadowColor = "#000"
-  this.context.shadowOffsetX = 5;
-  this.context.shadowOffsetY = 5;
-  this.context.shadowBlur = 25;
-  */
   this.context.lineWidth = 5;
   this.context.strokeText("LOADING", this.scaled_width, this.scaled_height);
   this.context.fillText("LOADING", this.scaled_width, this.scaled_height);
-  console.log('loading...');
-
-  /*
-  if(!this.scale) this.scale = 1;
-  this.context.font = "bold "+Math.round(this.canvas.width/8)+"px Arial";
-  this.context.textBaseline = 'middle';
-  this.context.textAlign = 'center';
-  this.context.fillStyle = "rgba(255, 0, 0, 0.8)";
-  this.context.fillText("LOADING", (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
-  console.log('loading...');
-  */
+  //console.log('loading...');
 }
-/*
-Game.prototype.draw_gameover = function() {
-  this.context.save();    
-  this.context.fillStyle = "rgba(255, 255, 255, 0.8)";
-  this.context.strokeStyle = 'rgba(0, 0, 0, 0.6)';
-  this.context.font = "bold "+Math.round(this.canvas.width/8)+"px Arial";
-  this.context.textBaseline = 'middle';
-  this.context.textAlign = 'center';
-  this.context.shadowColor = "#000"
-  this.context.shadowOffsetX = 5;
-  this.context.shadowOffsetY = 5;
-  this.context.shadowBlur = 25;
-  this.context.lineWidth = 5;
-  this.context.strokeText("TIME UP", (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
-  this.context.fillText("TIME UP", (this.canvas.width/this.scale)/2, (this.canvas.height/this.scale)/2);
-  this.context.restore();
-  //this.context.fillText("gameover", 50, 60);
-}
-*/
 
 ////////////////////////////////////////
 
@@ -453,10 +342,3 @@ Game.prototype.clockTick = function() {
 Game.prototype.getTimer = function() {
   return (new Date().getTime() - this.start_time); //milliseconds
 }
-
-/*
-Game.prototype.loop = function(){
-  var instance = this;
-  instance.interval = requestAnimationFrame(instance.draw(), instance.canvas);
-}
-*/
