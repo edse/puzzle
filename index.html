@@ -53,10 +53,43 @@
       </div>
     </div>
 
+    <div id="modal-success" class="modal hide fade" style="display: none; ">
+      <div class="modal-header">
+        <button class="close" data-dismiss="modal">×</button>
+        <h1>Yes, you did it!</h1>
+      </div>
+      <div class="modal-body">
+        <p><span id="stage" class="label label-success">Stage 1 completed!</span></p>
+        <p><span id="pieces" class="label label-warning">4 pieces in 30s</span></p>
+        <!--
+        <h4>Popover in a modal</h4>
+        <p>This <a href="#" class="btn popover-test" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">button</a> should trigger a popover on hover.</p>
+        <h4>Tooltips in a modal</h4>
+        <p><a href="#" class="tooltip-test" data-original-title="Tooltip">This link</a> and <a href="#" class="tooltip-test" data-original-title="Tooltip">that link</a> should have tooltips on hover.</p>
+        -->
+        <hr />
+      </div>
+      <div class="modal-footer">
+        <!--<a href="#" class="btn" data-dismiss="modal">No thanks</a>-->
+        <a href="#" class="btn btn-primary" id="next">Next Stage</a>
+      </div>
+    </div>
+
+
     <div class="container">
 
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit content">
+
+        <div id="promo" class="alert alert-block alert-message fade in">
+          <button class="close" data-dismiss="alert">×</button>
+          <h4 class="alert-heading">HTML5 Video Puzzle</h4>
+          <p>Check this out! The same puzzle game, but using Youtube videos intead still images.</p>
+          <p>
+            <a class="btn btn-small btn-info" href="http://html5videopuzzle.appspot.com"><i class="icon-info-sign icon-white"></i> More Info</a> <!--<a class="btn" href="#">No, thanks</a>-->
+          </p>
+        </div>
+
         <h1>HTML5 Puzzle</h1>
         <p>I'm using this game for learning some of the "new" HTML5 features:</p>
         <ul>
@@ -68,8 +101,11 @@
           <li>Audio API</li>
           <li>Mouse, keyboard, and touch support</li>
         </ul>
-        <p><a class="btn btn-primary btn-large" href="javascript: start();">Play &raquo;</a></p>
+        
+        <p><a id="test" class="btn btn-primary btn-danger" href="javascript: start(); setTimeOut('$(\'#test\').popover(\'hide\')', 2000);" rel="popover" data-content="Remember, it is only a test to see what we can easily do with HTML5." data-original-title="This is a test">Play &raquo;</a></p>
+
         <p><a href="http://html5videopuzzle.appspot.com">Check this out</a>. It is the same game but using a Youtube video.</p>
+        
       </div>
 
       <!-- Example row of columns -->

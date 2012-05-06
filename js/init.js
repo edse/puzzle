@@ -220,3 +220,25 @@ function resizeGame() {
 
 window.addEventListener('resize', resizeGame, false);
 window.addEventListener('orientationchange', resizeGame, false);
+//
+
+$(function() {
+  $("#test").popover({
+    animation: true,
+    placement: 'right',
+    delay: { show: 200, hide: 2000 }
+  });
+  
+  $(".popover-test").popover();
+  $(".tooltip-test").tooltip();
+  
+  $("#promo").alert();
+  
+  //$('#modal-success').modal();
+    
+  $("#next").click(function() {
+    game.nextStage();
+    $('#modal-success').modal('hide');
+  });
+  
+});

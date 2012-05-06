@@ -1,5 +1,6 @@
 function Game(canvas) {
   this.started = false;
+  this.stage = 1;
   this.num_lines = 2;
   this.scale = 1;
   this.alpha = 1;
@@ -114,6 +115,7 @@ Game.prototype.init = function(){
   this.draw_bg();
   
   this.remaining_time = this.num_pieces*30;
+  this.time_to_complete = this.num_pieces*30;
   this.clock_interval = null;
   this.mouse = new Mouse(this);
 
@@ -243,12 +245,17 @@ Game.prototype.render = function() {
     else{
       if(this.is_over){
         window.m.pauseGame();
+        $('#stage').html("Stage "+this.stage+" completed!");
+        $('#pieces').html(this.num_lines*this.num_lines+" pieces in "+(this.time_to_complete-this.remaining_time)+"s");
+        $('#modal-success').modal();
+        /*
         if(confirm('Yes, you did it! Try the next level')){
           this.is_over = false;
           this.num_lines++;
           this.init();
           window.m.startGame();
         }
+        */
       }else{
         if(this.num_pieces == this.placed_pieces.length){
           this.is_over = true;
@@ -341,4 +348,12 @@ Game.prototype.clockTick = function() {
 
 Game.prototype.getTimer = function() {
   return (new Date().getTime() - this.start_time); //milliseconds
+}
+
+Game.prototype.nextStage = function() {
+  this.is_over = false;
+  this.stage++;
+  this.num_lines++;
+  this.init();
+  window.m.startGame();
 }
