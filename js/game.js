@@ -128,7 +128,7 @@ Game.prototype.init = function(){
   
   this.draw_bg();
   
-  this.remaining_time = this.num_pieces*30;
+  this.remaining_time = this.num_pieces*(10/this.stage);
   this.time_to_complete = this.remaining_time;
   this.clock_interval = null;
   this.mouse = new Mouse(this);
