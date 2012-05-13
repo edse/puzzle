@@ -25,6 +25,8 @@ Game.prototype.loadAssets = function() {
   console.log("canvas: "+window.innerWidth+", "+window.innerHeight)
   //
   
+  this.original_width = this.canvas.width;
+  this.original_height = this.canvas.height;
   this.font_size = Math.round(this.canvas.width/8);
   this.scaled_width = (this.canvas.width/this.scale)/2;
   this.scaled_height = (this.canvas.height/this.scale)/2;
@@ -63,6 +65,11 @@ Game.prototype.loadAssets = function() {
   this.items_to_load = this.assets.length;
   loadAssets(this, this.assets);
   
+  this.w_rate = this.canvas.width / this.img.width;
+  this.h_rate = this.canvas.height / this.img.height;
+  this.w_scale = 1;
+  this.h_scale = 1;
+  
   console.log(this.loaded_items+' assets loaded');
 }
 
@@ -71,6 +78,12 @@ Game.prototype.apply_scale = function(){
   document.getElementById('canvas').height = window.innerHeight;
   document.getElementById('canvas_bg').width = window.innerWidth;
   document.getElementById('canvas_bg').height = window.innerHeight;
+  
+  var rw = document.getElementById('canvas').width / this.original_width;
+  var rh = document.getElementById('canvas').height / this.original_height;
+  this.scale = Math.min(rw,rh);
+  
+  /*
   console.log("window: " + window.innerWidth + ", " + window.innerHeight + " | img: "+this.img_width+", "+this.img_height);
   if(window.innerHeight-160 <= this.img_height + (this.piece_height*1.5)){
     var h = ((this.img_height + (this.piece_height*1.5))+160 + this.canvas.height)/2;
@@ -80,6 +93,7 @@ Game.prototype.apply_scale = function(){
     var w = ((this.img_width + (this.piece_width*1.2)) + this.canvas.width)/2;
     this.scale = this.canvas.width/w;
   }
+  */
 
   this.context.scale(this.scale,this.scale);
   console.log('scale: '+this.scale);  
