@@ -211,13 +211,15 @@ function itemLoaded(g) {
 }
 
 function resizeGame() {  
+  location.reload();
+  /*
   console.log("window: " + window.innerWidth + ", " + window.innerHeight)
   if(game.started){
     game.resized = true;
     game.init();
   }
+  */
 }
-
 window.addEventListener('resize', resizeGame, false);
 window.addEventListener('orientationchange', resizeGame, false);
 //

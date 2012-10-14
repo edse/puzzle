@@ -39,9 +39,14 @@ Game.prototype.loadAssets = function() {
   this.maxElapsedTime = 0;
   this.start_time = 0;
   
+  var random_image = Math.floor(Math.random() * 12) + 1;
+  if(random_image<10)
+    random_image = new String("0"+random_image);
+  
   this.assets = Array({
       type: "image",
-      src: "img/rainbow500x400.png",
+      //src: "img/rainbow500x400.png",
+      src: "img/puzzles/"+random_image+".png",
       slug: "img"
     },{
       type: "audio",
@@ -102,6 +107,8 @@ Game.prototype.apply_scale = function(){
 
 
 Game.prototype.init = function(){
+  //this.loadAssets();
+
   this.loaded = true;
   this.pieces = new Array();
   this.holders = new Array();
