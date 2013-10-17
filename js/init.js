@@ -55,10 +55,10 @@ window.m = {
 };
 window.m.interv = function() {
   interval = setTimeout("window.m.game.mouse.moving = false; document.getElementById('moving').value = false; window.m.intervClear();", 500);
-}
+};
 window.m.intervClear = function() {
   clearInterval(interval)
-}
+};
 window.m.stopGame = function() {
   clearInterval(gameInterval);
   
@@ -74,10 +74,11 @@ window.m.stopGame = function() {
   
   $('#canvas, #canvas_bg').hide();
   $('.content').show();
+};
 
-}
 window.m.startGame = function() {
   $('html, body').animate({ scrollTop: 0 }, 'fast');
+  clearInterval(gameInterval);
   gameInterval = setInterval(function() { game.remaining_time--; },1000);
   game.started = true;
   //resizeGame();
@@ -87,7 +88,8 @@ window.m.startGame = function() {
   $('#home').removeClass('active');
   $('#canvas, #canvas_bg, .control').show();
   $('.content, #play, #exitfullscreen, #bgm, #sfx, #autosnap').hide();
-}
+};
+
 window.m.pauseGame = function() {
   clearInterval(gameInterval);
   game.started = false;
@@ -95,7 +97,8 @@ window.m.pauseGame = function() {
 
   $('#play').show();
   $('.control').hide();  
-}
+};
+
 window.m.stopSFX = function() {
   window.m.game.drip.volume = 0.0;
   window.m.game.twang.volume = 0.0;
@@ -103,41 +106,48 @@ window.m.stopSFX = function() {
   window.m.game.twang.pause();
   $('#sfxoff').hide();
   $('#sfx').show();
-}
+};
+
 window.m.startSFX = function() {
   window.m.game.drip.volume = 1.0;
   window.m.game.twang.volume = 1.0;
   $('#sfxoff').show();
   $('#sfx').hide();
-}
+};
+
 window.m.stopBGM = function() {
   window.m.game.bgm.volume = 0.0;
   window.m.game.bgm.pause();
   $('#bgmoff').hide();
   $('#bgm').show();
-}
+};
+
 window.m.startBGM = function() {
   window.m.game.bgm.volume = 1.0;
   window.m.game.bgm.play();
   $('#bgmoff').show();
   $('#bgm').hide();
-}
+};
+
 window.m.autoSnap = function() {
   window.m.game.auto_snap = true;
   $('#autosnapoff').show();
   $('#autosnap').hide();
-}
+};
+
 window.m.autoSnapOff = function() {
   window.m.game.auto_snap = false;
   $('#autosnapoff').hide();
   $('#autosnap').show();
-}
+};
+
 window.m.fullscreen = function() {
   RunPrefixMethod(game.canvas, "RequestFullScreen");
-}
+};
+
 window.m.exitfullscreen = function() {
   RunPrefixMethod(document, 'CancelFullScreen');
-}
+};
 
 function start() {
   window.m.startGame();
@@ -156,26 +166,11 @@ function loop() {
 
   var elapsed = game.getTimer() - game.time;
   game.time = game.getTimer();
-  //elapsed = Math.min(20, Math.max(-20, elapsed));
   if(elapsed > game.maxElapsedTime)
     game.maxElapsedTime = elapsed;
-
-  /*
-  game.context.textAlign = 'left';
-  game.context.fillStyle = "rgba(255, 255, 255, 1)";
-  game.context.font = "bold 12px Arial";
-  game.context.fillText("scale: " + game.scale, 50, 90);
-  game.context.fillText("loaded items: " + game.loaded_items, 50, 100);
-  game.context.fillText(">>> " + elapsed, 50, 110);
-  game.context.fillText("maxElapsedTime>>> " + game.maxElapsedTime, 50, 120);
-  game.context.fillText(game.remaining_time, 50, 130);
-  game.context.fillText("auto-snap: "+game.auto_snap, 50, 140);
-  */
-
 }
 
 function loadAssets(g,assets) {
-  //alert('>>'+atttr);
   for(i=0; i<assets.length; i++){
     if(assets[i].type == "image"){
       //IMAGE
@@ -213,13 +208,6 @@ function itemLoaded(g) {
 
 function resizeGame() {  
   location.reload();
-  /*
-  console.log("window: " + window.innerWidth + ", " + window.innerHeight)
-  if(game.started){
-    game.resized = true;
-    game.init();
-  }
-  */
 }
 window.addEventListener('resize', resizeGame, false);
 window.addEventListener('orientationchange', resizeGame, false);
@@ -237,8 +225,6 @@ $(function() {
   
   $("#promo").alert();
   
-  //$('#modal-success').modal();
-    
   $("#next").click(function() {
     game.nextStage();
     $('#modal-success').modal('hide');

@@ -7,7 +7,7 @@ function Game(canvas) {
   this.fade1 = 0;
   this.fade2 = 0;
   this.resized = true;
-  console.log('start loading...')
+  console.log('start loading...');
   this.loadAssets();
 }
 
@@ -22,7 +22,7 @@ Game.prototype.loadAssets = function() {
   document.getElementById('canvas').height = window.innerHeight;
   document.getElementById('canvas_bg').width = window.innerWidth;
   document.getElementById('canvas_bg').height = window.innerHeight;
-  console.log("canvas: "+window.innerWidth+", "+window.innerHeight)
+  console.log("canvas: "+window.innerWidth+", "+window.innerHeight);
   //
   
   this.original_width = this.canvas.width;
@@ -39,15 +39,58 @@ Game.prototype.loadAssets = function() {
   this.maxElapsedTime = 0;
   this.start_time = 0;
   
-  var random_image = Math.floor(Math.random() * 12) + 1;
-  if(random_image<10)
-    random_image = new String("0"+random_image);
+  this.random_image = Math.floor(Math.random() * 12) + 1;
+  if(this.random_image<10)
+    this.random_image = new String("0"+this.random_image);
   
   this.assets = Array({
       type: "image",
-      //src: "img/rainbow500x400.png",
-      src: "img/puzzles/"+random_image+".png",
-      slug: "img"
+      src: "img/puzzles/01.png",
+      slug: "img01"
+    },{
+      type: "image",
+      src: "img/puzzles/02.png",
+      slug: "img02"
+    },{
+      type: "image",
+      src: "img/puzzles/03.png",
+      slug: "img03"
+    },{
+      type: "image",
+      src: "img/puzzles/04.png",
+      slug: "img04"
+    },{
+      type: "image",
+      src: "img/puzzles/05.png",
+      slug: "img05"
+    },{
+      type: "image",
+      src: "img/puzzles/06.png",
+      slug: "img06"
+    },{
+      type: "image",
+      src: "img/puzzles/07.png",
+      slug: "img07"
+    },{
+      type: "image",
+      src: "img/puzzles/08.png",
+      slug: "img08"
+    },{
+      type: "image",
+      src: "img/puzzles/09.png",
+      slug: "img09"
+    },{
+      type: "image",
+      src: "img/puzzles/10.png",
+      slug: "img10"
+    },{
+      type: "image",
+      src: "img/puzzles/11.png",
+      slug: "img11"
+    },{
+      type: "image",
+      src: "img/puzzles/12.png",
+      slug: "img12"
     },{
       type: "audio",
       src: "audio/final/drip",
@@ -66,49 +109,38 @@ Game.prototype.loadAssets = function() {
       slug: "chimes"
     }
   );
-  
+    
   this.items_to_load = this.assets.length;
   loadAssets(this, this.assets);
-  
+
+  eval("this.img = this.img"+this.random_image);
+  console.log("this.img = this.img"+this.random_image);
+
   this.w_rate = this.canvas.width / this.img.width;
   this.h_rate = this.canvas.height / this.img.height;
   this.w_scale = 1;
   this.h_scale = 1;
   
   console.log(this.loaded_items+' assets loaded');
-}
+};
 
 Game.prototype.apply_scale = function(){
   document.getElementById('canvas').width = window.innerWidth;
   document.getElementById('canvas').height = window.innerHeight;
   document.getElementById('canvas_bg').width = window.innerWidth;
   document.getElementById('canvas_bg').height = window.innerHeight;
-  
+
   var rw = document.getElementById('canvas').width / this.original_width;
   var rh = document.getElementById('canvas').height / this.original_height;
   this.scale = Math.min(rw,rh);
-  
-  /*
-  console.log("window: " + window.innerWidth + ", " + window.innerHeight + " | img: "+this.img_width+", "+this.img_height);
-  if(window.innerHeight-160 <= this.img_height + (this.piece_height*1.5)){
-    var h = ((this.img_height + (this.piece_height*1.5))+160 + this.canvas.height)/2;
-    this.scale = this.canvas.height/h;
-  }
-  else if(window.innerWidth <= this.img_width + (this.piece_width*1.2)){
-    var w = ((this.img_width + (this.piece_width*1.2)) + this.canvas.width)/2;
-    this.scale = this.canvas.width/w;
-  }
-  */
 
   this.context.scale(this.scale,this.scale);
   console.log('scale: '+this.scale);  
   this.resized = false;
-}
+};
 
 
 Game.prototype.init = function(){
-  //this.loadAssets();
-
   this.loaded = true;
   this.pieces = new Array();
   this.holders = new Array();
@@ -118,13 +150,13 @@ Game.prototype.init = function(){
   this.over = null;
   this.is_over = false;
 
-  console.log(this.img.width+','+this.img.height)
+  console.log(this.img.width+','+this.img.height);
   this.img_width = this.img.width;
   this.img_height = this.img.height;
   this.num_pieces = this.num_lines * this.num_lines;
   this.piece_width = this.img_width / this.num_lines;
   this.piece_height = this.img_height / this.num_lines;
-  
+
   //IMAGE SIZE
   if(this.resized)
     this.apply_scale();
@@ -132,9 +164,9 @@ Game.prototype.init = function(){
   this.font_size = Math.round(this.canvas.width/8);
   this.scaled_width = (this.canvas.width/this.scale)/2;
   this.scaled_height = (this.canvas.height/this.scale)/2;
-  
+
   this.draw_bg();
-  
+
   this.remaining_time = this.num_pieces*(10/this.stage);
   this.time_to_complete = this.remaining_time;
   this.clock_interval = null;
@@ -144,8 +176,7 @@ Game.prototype.init = function(){
 
   this.placeHolders();
   this.placePieces();
-  
-}
+};
 
 Game.prototype.placePieces = function(){
   for(i=0; i<this.num_pieces; i++){
@@ -170,7 +201,7 @@ Game.prototype.placePieces = function(){
   if(this.chimes.currentTime != 0)
     this.chimes.currentTime = 0;
   this.chimes.play();
-}
+};
 
 Game.prototype.placeHolders = function(){
   var pieces = 1;
@@ -193,7 +224,7 @@ Game.prototype.placeHolders = function(){
       pieces++;
     }
   }
-}
+};
 
 Game.prototype.render = function() {
   this.draw_bg();
@@ -213,7 +244,7 @@ Game.prototype.render = function() {
       holder = this.holders[i];
       holder.draw();
     }
-  
+
     //PIECES
     var not_placed = new Array();
     var over = false;
@@ -233,17 +264,17 @@ Game.prototype.render = function() {
           }
         }
       }
-        
+
     }
     for(var i = 0; i < not_placed.length; i++){
       not_placed[i].draw();
     }
     if(this.selected)
       this.selected.draw();
-  
+
     if(!over)
       this.over = null;
-    
+
     //move
     if((this.selected != null)&&(this.selected.moveble)){
       this.selected.x = Math.round(this.mouse.x);
@@ -269,14 +300,6 @@ Game.prototype.render = function() {
         $('#stage').html("Stage "+this.stage+" completed!");
         $('#pieces').html(this.num_lines*this.num_lines+" pieces in "+(this.time_to_complete-this.remaining_time)+"s");
         $('#modal-success').modal();
-        /*
-        if(confirm('Yes, you did it! Try the next level')){
-          this.is_over = false;
-          this.num_lines++;
-          this.init();
-          window.m.startGame();
-        }
-        */
       }else{
         if(this.num_pieces == this.placed_pieces.length){
           this.is_over = true;
@@ -284,38 +307,7 @@ Game.prototype.render = function() {
       }
     }
   }
-
-  //DEBUG
-  /*
-  if(this.debug){
-    document.getElementById('mx').value = this.mouse.x;
-    document.getElementById('my').value = this.mouse.y;
-  
-    document.getElementById('hx').value = this.holders[0].x;
-    document.getElementById('hy').value = this.holders[0].y;
-    document.getElementById('hx2').value = this.holders[1].x;
-    document.getElementById('hy2').value = this.holders[1].y;
-  
-    document.getElementById('moving').value = this.mouse.moving;
-    if(this.over)
-      document.getElementById('over').value = this.over.id;
-    else
-      document.getElementById('over').value = "";
-    if(this.selected)
-      document.getElementById('selected').value = this.selected.id;
-    else
-      document.getElementById('selected').value = "";
-  
-    document.getElementById('p').value = this.num_pieces;
-    document.getElementById('l').value = this.num_lines;
-    document.getElementById('pw').value = this.piece_width;
-    document.getElementById('ph').value = this.piece_height;
-  
-    document.getElementById('pp').value = this.placed_pieces.length;
-  }
-  */
-
-}
+};
 
 Game.prototype.draw_bg = function() {
   if(!this.scale) this.scale = 1;
@@ -327,7 +319,7 @@ Game.prototype.draw_bg = function() {
   offsety += 40;
   this.context_bg.globalAlpha = 0.2;
   this.context_bg.drawImage(this.img, offsetx, offsety, this.img_width, this.img_height);
-}
+};
 
 Game.prototype.draw_remaining = function() {
   this.fade1 = this.fade1+(0.010*this.alpha);
@@ -341,15 +333,15 @@ Game.prototype.draw_remaining = function() {
   this.context.font = "bold "+this.font_size+"px Arial";
   this.context.textBaseline = 'middle';
   this.context.textAlign = 'center';
-  this.context.fillText(game.remaining_time, this.scaled_width, this.scaled_height);
-}
+  this.context.fillText(parseInt(game.remaining_time), this.scaled_width, this.scaled_height);
+};
 
 Game.prototype.draw_loading = function() {
   this.fade1 = this.fade1+0.025;
   if(this.fade1 >= 1)
     this.fade1 = 0;
   this.fade2 = 1-this.fade1;
-  
+
   this.context.fillStyle = "rgba(255, 255, 255, "+this.fade2+")";
   this.context.strokeStyle = "rgba(255, 255, 255, "+this.fade1+")";
   this.context.font = "bold "+this.font_size+"px Arial";
@@ -358,23 +350,31 @@ Game.prototype.draw_loading = function() {
   this.context.lineWidth = 5;
   this.context.strokeText("LOADING", this.scaled_width, this.scaled_height);
   this.context.fillText("LOADING", this.scaled_width, this.scaled_height);
-  //console.log('loading...');
-}
+};
 
 ////////////////////////////////////////
 
 Game.prototype.clockTick = function() {
   this.remaining_time--;
-}
+};
 
 Game.prototype.getTimer = function() {
   return (new Date().getTime() - this.start_time); //milliseconds
-}
+};
 
 Game.prototype.nextStage = function() {
+  var r = this.random_image;
+  while(r == this.random_image){
+    this.random_image = Math.floor(Math.random() * 12) + 1;
+    if(this.random_image<10)
+      this.random_image = new String("0"+this.random_image);
+  }
+  
+  eval("this.img = this.img"+this.random_image);
+  
   this.is_over = false;
   this.stage++;
   this.num_lines++;
   this.init();
   window.m.startGame();
-}
+};
