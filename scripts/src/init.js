@@ -7,7 +7,7 @@
     window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
   }
   if(!window.requestAnimationFrame) {
-    console.log('!window.requestAnimationFrame');
+    //console.log('!window.requestAnimationFrame');
     window.requestAnimationFrame = function(callback, element) {
       var currTime = new Date().getTime();
       var timeToCall = Math.max(0, 22 - (currTime - lastTime));
@@ -213,7 +213,10 @@ function itemLoaded(g) {
 }
 
 function resizeGame() {  
-  location.reload();
+  //location.reload();
+  game.apply_scale();
+  if(game.started)
+    game.init();
 }
 window.addEventListener('resize', resizeGame, false);
 window.addEventListener('orientationchange', resizeGame, false);

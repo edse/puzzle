@@ -7,7 +7,7 @@ function Game(canvas) {
   this.fade1 = 0;
   this.fade2 = 0;
   this.resized = true;
-  console.log('start loading...');
+  //console.log('start loading...');
   this.loadAssets();
 }
 
@@ -25,7 +25,7 @@ Game.prototype.loadAssets = function() {
   
   document.getElementById('game').height = window.innerHeight;
   
-  console.log("canvas: "+window.innerWidth+", "+window.innerHeight);
+  //console.log("canvas: "+window.innerWidth+", "+window.innerHeight);
   //
   
   this.original_width = this.canvas.width;
@@ -33,8 +33,8 @@ Game.prototype.loadAssets = function() {
   this.font_size = Math.round(this.canvas.width/8);
   this.scaled_width = (this.canvas.width/this.scale)/2;
   this.scaled_height = (this.canvas.height/this.scale)/2;
-  console.log('scaled_width: '+this.scaled_width);
-  console.log('scaled_height: '+this.scaled_height);
+  //console.log('scaled_width: '+this.scaled_width);
+  //console.log('scaled_height: '+this.scaled_height);
 
   this.loaded_items = 0;
   this.loaded = false;
@@ -45,7 +45,9 @@ Game.prototype.loadAssets = function() {
   this.random_image = Math.floor(Math.random() * 12) + 1;
   if(this.random_image<10)
     this.random_image = new String("0"+this.random_image);
-  
+    
+  this.random_image = new String("09");  
+ 
   this.drip = document.getElementById("audio-drip");
   this.twang = document.getElementById("audio-twang");
   this.bgm = document.getElementById("audio-bgm");
@@ -59,14 +61,14 @@ Game.prototype.loadAssets = function() {
   //eval("this.img = this.img"+this.random_image);
   eval("this.img = document.getElementById('img"+this.random_image+"');");
   //console.log("this.img = this.img"+this.random_image);
-  console.log("this.img = document.getElementById('img"+this.random_image+"')");
-  
+  //console.log("this.img = document.getElementById('img"+this.random_image+"')");
+   
   this.w_rate = this.canvas.width / this.img.width;
   this.h_rate = this.canvas.height / this.img.height;
   this.w_scale = 1;
   this.h_scale = 1;
   
-  console.log(this.loaded_items+' assets loaded');
+  //console.log(this.loaded_items+' assets loaded');
 };
 
 Game.prototype.apply_scale = function(){
@@ -75,19 +77,55 @@ Game.prototype.apply_scale = function(){
   document.getElementById('canvas_bg').width = window.innerWidth;
   document.getElementById('canvas_bg').height = window.innerHeight;
 
-  $("#game").css('height', window.innerHeight);
-
+  /*
   var rw = document.getElementById('canvas').width / this.original_width;
   var rh = document.getElementById('canvas').height / this.original_height;
   this.scale = Math.min(rw,rh);
+  if(this.scale == 1)
+    this.scale = Math.max(rw,rh);
+  */
+
+  ws = (document.getElementById('canvas').width/1.5) / document.getElementById('img09').width;
+  hs = (document.getElementById('canvas').height/1.5) / document.getElementById('img09').height;
+  this.scale = Math.min(ws,hs);
+
+  /*
+  if(document.getElementById('img09').width >= document.getElementById('canvas').width){
+    console.log("W")
+    this.scale = (document.getElementById('canvas').width/1.5) / document.getElementById('img09').width
+  }
+  else if(document.getElementById('img09').height >= document.getElementById('canvas').height){
+    console.log("H")
+    this.scale = (document.getElementById('canvas').height/1.5) / document.getElementById('img09').height
+  }
+  else if(document.getElementById('img09').width < document.getElementById('canvas').width){
+    console.log("W2")
+    this.scale = (document.getElementById('canvas').width/1.5) / document.getElementById('img09').width
+  }
+  else if(document.getElementById('img09').height < document.getElementById('canvas').height){
+    console.log("H2")
+    this.scale = (document.getElementById('canvas').height/1.5) / document.getElementById('img09').height
+  }
+  */
+  
+  
+  /*else{
+    ws = (document.getElementById('canvas').width/1.5) / document.getElementById('img09').width;
+    hs = (document.getElementById('canvas').height/1.5) / document.getElementById('img09').height;
+  }
+  console.log(ws+':'+hs);
+  this.scale = Math.min(ws,hs);
+  */
 
   this.context.scale(this.scale,this.scale);
-  console.log('scale: '+this.scale);  
+  //console.log('scale: '+this.scale);
   this.resized = false;
 };
 
 
 Game.prototype.init = function(){
+  $("#game").css('height', window.innerHeight);
+  
   this.loaded = true;
   this.pieces = new Array();
   this.holders = new Array();
@@ -97,14 +135,27 @@ Game.prototype.init = function(){
   this.over = null;
   this.is_over = false;
 
-  console.log(this.img.width+','+this.img.height);
+  //console.log(this.img.width+','+this.img.height);
   this.img_width = this.img.width;
   this.img_height = this.img.height;
+  
+  //this.img_width = document.getElementById('canvas').width/2;
+  //this.img_height = document.getElementById('canvas').height/2;
+  
+  //this.img.width = this.img_width; 
+  //this.img.height = this.img_height; 
+  
+  /*
   if(this.img_width > document.getElementById('canvas').width)
-    this.img_width = (document.getElementById('canvas').width/100)*90;
+    this.img_width = (document.getElementById('canvas').width/100)*70;
+  if(this.img_height > document.getElementById('canvas').height)
+    this.img_height = (document.getElementById('canvas').height/100)*70;
+  */
   this.num_pieces = this.num_lines * this.num_lines;
   this.piece_width = this.img_width / this.num_lines;
   this.piece_height = this.img_height / this.num_lines;
+  
+  //console.log("piece_width: "+this.piece_width);
 
   //IMAGE SIZE
   if(this.resized)
@@ -145,7 +196,7 @@ Game.prototype.placePieces = function(){
       false
     );
     this.pieces.push(temp);
-    console.log('pieces array length>>'+this.pieces.length);
+    //console.log('pieces array length>>'+this.pieces.length);
   }
   document.getElementById('audio-chimes').play();
 };
@@ -154,7 +205,7 @@ Game.prototype.placeHolders = function(){
   var pieces = 1;
   var offsetx = Math.round(this.scaled_width-(this.img_width)/2);
   var offsety = Math.round(this.scaled_height-(this.img_height)/2);
-  offsety += 40;
+  offsety += 26;
   for(var i = 0; i < this.num_lines; ++i) {
     for(var j = 0; j < this.num_lines; ++j) {
       temp = new Holder(
@@ -167,7 +218,7 @@ Game.prototype.placeHolders = function(){
         false
       );
       this.holders.push(temp);
-      console.log('holders array length>>'+this.holders.length+' '+temp.x+','+temp.y);
+      //console.log('holders array length>>'+this.holders.length+' '+temp.x+','+temp.y);
       pieces++;
     }
   }
@@ -263,7 +314,7 @@ Game.prototype.draw_bg = function() {
   //puzzle image
   var offsetx = Math.round(this.scaled_width-(this.img_width)/2);
   var offsety = Math.round(this.scaled_height-(this.img_height)/2);
-  offsety += 40;
+  offsety += 26;
   this.context_bg.globalAlpha = 0.2;
   this.context_bg.drawImage(this.img, offsetx, offsety, this.img_width, this.img_height);
 };
