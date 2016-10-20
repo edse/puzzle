@@ -1,0 +1,32 @@
+{
+  "name": "puzzle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adiatma/puzzle.git"
+  },
+  "keywords": [
+    "puzzle",
+    "html5",
+    "webpack"
+  ],
+  "author": "Emerson Estrella",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adiatma/puzzle/issues"
+  },
+  "homepage": "https://github.com/adiatma/puzzle#readme",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0",
+    "modernizr": "^3.3.1"
+  }
+}
