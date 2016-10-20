@@ -1,0 +1,224 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge')
+  title HTML5 Image Puzzle
+  meta(name='description', content='Learning HTML5 by doing. HTML5 Image Puzzle Game featuring: Canvas, Image manipulation, RequestAnimationFrame, Fullscreen API, Application Cache API (Offline browsing), Audio API, Touch support')
+  meta(name='viewport', content='width=device-width')
+  meta(name='author', content='Emerson Estrella')
+  // Place favicon.ico and apple-touch-icon.png in the root directory
+  link(rel='stylesheet', href='styles/6a9a8eb9.vendor.css')
+  link(rel='stylesheet', href='styles/d2f6eea1.main.css')
+  script(src='bower_components/modernizr/modernizr.js')
+//if lt IE 10
+  p.browsehappy
+    | You are using an 
+    strong outdated
+    |  browser. Please 
+    a(href='http://browsehappy.com/') upgrade your browser
+    |  to improve your experience.
+.container
+  .header
+    ul.nav.nav-pills.pull-right
+      li
+        a(href='http://emersonestrella.appspot.com', target='_blank') About Me
+      li.active
+        a#play-top(href='#')
+          span.glyphicon.glyphicon-play
+          |  Play
+    h3.text-muted HTML5 Image Puzzle Game
+  .jumbotron
+    h1 HTML5 Image Puzzle Game
+    p.lead Having fun with HTML5!
+    p featuring:
+    ul.list-group
+      li.list-group-item Canvas
+      li.list-group-item Image manipulation
+      li.list-group-item Application Cache API (Offline browsing)
+      li.list-group-item Audio API
+      li.list-group-item Touch support*
+    p
+      // responsive-ad
+      script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
+      ins.adsbygoogle(style='display:block', data-ad-client='ca-pub-6794644097825747', data-ad-slot='8919777537', data-ad-format='auto')
+      script.
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    p
+      button#play-btn-lg.btn.btn-success.btn-lg(type='button')
+        span.glyphicon.glyphicon-play
+        |  PLAY
+  .row.marketing
+    .col2-lg-6
+      h4 Canvas, image manipulation, and RequestAnimationFrame
+      p
+        | This game runs on canvas (no plugin required). The RequestAnimationFrame provide power efficient and smooth animations.
+      h4 Audio, and fullscreen APIs
+      p
+        | Background music and sound effects using the Audio API. Also fullscreen mode support.
+      h4 Application Cache/Offline browsing support
+      p You can keep playing even when you go offline.
+  p
+    // responsive-ad
+    script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
+    ins.adsbygoogle(style='display:block', data-ad-client='ca-pub-6794644097825747', data-ad-slot='8919777537', data-ad-format='auto')
+    script.
+      (adsbygoogle = window.adsbygoogle || []).push({});
+  .footer
+    p
+      | by 
+      a(href='http://emersonestrella.appspot.com') Emerson Estrella
+ul.nav.nav-pills.abs
+  li#home
+    button#btn-home.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-home
+      |  Home
+  li#play
+    button#btn-play.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-play
+      |  Play
+  li#pause.control
+    button#btn-pause.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-pause
+      |  Pause
+  li#fullscreen.control
+    button#btn-fullscreen.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-fullscreen
+      |  Fullscreen
+  li#exitfullscreen.control
+    button#btn-exitfullscreen.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-resize-small
+      |  Exit Fullscreen
+  li#bgm.control
+    button#btn-bmg-on.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-volume-up
+      |  BGM On
+  li#bgmoff.control
+    button#btn-bmg-off.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-volume-off
+      |  BGM Off
+  li#sfx.control
+    button#btn-sfx-on.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-volume-up
+      |  SFX On
+  li#sfxoff.control
+    button#btn-sfx-off.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-volume-off
+      |  SFX Off
+  li#autosnap.control
+    button#btn-autosnap-on.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-remove
+      |  Auto-Snap On
+  li#autosnapoff.control
+    button#btn-autosnap-off.btn.btn-xs.btn-default(type='button')
+      span.glyphicon.glyphicon-ok
+      |  Auto-Snap Off
+// Game modal
+#modal-success.modal.fade.show(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+        h1#myModalLabel.modal-title Yes, you did it!
+      .modal-body
+        p
+          span#stage.label.label-success Stage 1 completed!
+        p
+          span#pieces.label.label-warning 4 pieces in 30s
+        hr
+        p
+          // Responsive Ad #2
+          script(async='', src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')
+          ins.adsbygoogle(style='display:block', data-ad-client='ca-pub-6794644097825747', data-ad-slot='1396510736', data-ad-format='auto')
+          script.
+            (adsbygoogle = window.adsbygoogle || []).push({});
+      .modal-footer
+        button#next.btn.btn-primary(type='button') Next Stage
+    // /.modal-content
+  // /.modal-dialog
+// /.modal
+// Game canvas
+#game
+  canvas#canvas(style='display:none')
+  canvas#canvas_bg(style='display:none')
+// DEBUG/IMAGES
+#debug(style='display:none')
+  div
+    audio#audio-drip(controls='')
+      source(type='audio/ogg', src='audio/final/drip.ogg')
+      source(type='audio/mpeg', src='audio/final/drip.mp3')
+      | Your browser does not support the audio element.
+    audio#audio-twang(controls='')
+      source(type='audio/ogg', src='audio/final/twang2.ogg')
+      source(type='audio/mpeg', src='audio/final/twang2.mp3')
+      | Your browser does not support the audio element.
+    audio#audio-bgm(controls='')
+      source(type='audio/ogg', src='audio/final/Pictures-Sleep_on_soft_sheets.ogg')
+      source(type='audio/mpeg', src='audio/final/Pictures-Sleep_on_soft_sheets.mp3')
+      | Your browser does not support the audio element.
+    audio#audio-chimes(controls='')
+      source(type='audio/ogg', src='audio/final/chimes.ogg')
+      source(type='audio/mpeg', src='audio/final/chimes.mp3')
+      | Your browser does not support the audio element.
+  div
+    img#img01(src='images/puzzles/5cc842b2.01.png')
+    img#img02(src='images/puzzles/a9f8231a.02.png')
+    img#img03(src='images/puzzles/04e8c0cf.03.png')
+    img#img04(src='images/puzzles/29fd6df7.04.png')
+    img#img05(src='images/puzzles/70bae76c.05.png')
+    img#img06(src='images/puzzles/7fff1037.06.png')
+    img#img07(src='images/puzzles/2896145e.07.png')
+    img#img08(src='images/puzzles/62d9af6c.08.png')
+    img#img09(src='images/puzzles/eb80adca.09.png')
+    img#img10(src='images/puzzles/6f4ec30d.10.png')
+    img#img11(src='images/puzzles/4a61eee0.11.png')
+    img#img12(src='images/puzzles/965d5dd3.12.png')
+  div
+    | pieces:
+    input#p(name='p')
+    | pieces placed:
+    input#pp(name='pp')
+    | lines:
+    input#l(name='l')
+    | Pieces width:
+    input#pw(name='pw')
+    | Pieces height:
+    input#ph(name='ph')
+  div
+    | moving:
+    input#moving(name='moving')
+    | over:
+    input#over(name='over')
+    | selected:
+    input#selected(name='selected')
+  div
+    | x:
+    input#mx(name='mx')
+    | y:
+    input#my(name='my')
+  div
+    | p1 x:
+    input#px(name='px')
+    | p1 y:
+    input#py(name='py')
+  div
+    | h1 x:
+    input#hx(name='hx')
+    | h1 y:
+    input#hy(name='hy')
+  div
+    | h2 x:
+    input#hx2(name='hx2')
+    | h2 y:
+    input#hy2(name='hy2')
+// /DEBUG
+script(src='dist/vendor.min.js')
+// Google Analytics
+script.
+  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+  e.src='//www.google-analytics.com/analytics.js';
+  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+  ga('create','UA-31142108-1');ga('send','pageview');
+script(src='dist/plugins.min.js')
+script(src='dist/all.js')
